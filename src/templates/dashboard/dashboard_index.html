@@ -1,0 +1,311 @@
+
+{% extends '_layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+  {% block stylesheet %}
+     .sec-box{
+     <!-- width:400px; --><!-- dont uncomment this code - line -->
+     height:90px;
+     max-width:100%;
+     line-height:90px;
+     text-align:center;
+     position:relative;
+     
+     font-size:1.9rem;
+
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    transition: all 400ms ease-in;
+
+    font-variant: petite-caps;
+ }
+
+.sec-box a{
+ color:#fff;
+ text-decoration:none;
+	
+}
+
+
+ .employee-box{
+ 	background:#00008B;
+}
+
+.beneficiaire-box{
+    background:#00008B;
+
+}
+
+ .leave-box{
+ 	background:#00008B;
+
+}
+
+.ticket-box{
+    background:#00008B;
+
+}
+
+.card {
+  background-color: transparent !important;
+}
+
+
+
+
+
+.count-object {
+    position: absolute;
+    top: 40%;
+    right: 12px;
+    font-size: 29px;
+    font-weight: 100;
+    font-variant: petite-caps;
+    color: #f5f5f5;
+    text-shadow:1px 1px rgba(8, 8, 8, 0.23);
+}
+.sec-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .sec-box:hover {
+    transform: translateY(-5px);
+  }
+  
+  .sec-box a {
+    color: #333;
+    text-decoration: none;
+    font-size: 2 rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .sec-box a:hover {
+    color: #41b6d6;
+  }
+  
+  .sec-box .count-object {
+    display: block;
+    font-size: 3rem;
+    line-height: 1;
+    color: #41b6d6;
+    margin-top: 10px;
+  }
+  
+  .employee-box {
+    background-color: #f0f0f0;
+  }
+  
+  .beneficiaire-box {
+    background-color: #d9edf7;
+  }
+  
+  .leave-box {
+    background-color: #f7f7f7;
+  }
+  
+  .ticket-box {
+    background-color: #f0f0f0;
+  }
+
+{% endblock %}
+
+  
+
+ <!--CONTENTS-->
+{% block content %}
+ <section class="content">
+    <section class="container-fluid">
+        <section class="row justify-content-center">
+            <section class="col-12 text-center mb-4">
+              <h2 style="color: rgba(22, 22, 99, 0.903);">Dashboard</h2>
+            </section>
+            {% if request.user.is_superuser and request.user.is_staff %}
+             <section class="row justify-content-center">
+              <section class="col-lg-3 mb-3">
+                <div class="employee-box sec-box">
+                  <a href="">
+                    <i class="pe-7s-user"></i>
+                    <span>Employées </span>
+                  </a>
+                  <span class="count-object">{{ employees.count }}</span>
+                </div>
+              </section>
+            
+              <section class="col-lg-3 mb-3">
+                <div class="beneficiaire-box sec-box">
+                  <a href="">
+                    <i class="pe-7s-users"></i>
+                    <span>Bénéficiaires </span>
+                  </a>
+                  <span class="count-object">{{ beneficiaires.count }}</span>
+                </div>
+              </section>
+              {% endif %}
+              <section class="col-lg-3 mb-3">
+                <div class="leave-box sec-box">
+                  <a href="">
+                    <i class="pe-7s-note2"></i>
+                    <span>Congés </span>
+                  </a>
+                  <span class="count-object">{{ leaves.count }}</span>
+                </div>
+              </section>
+              <section class="col-lg-3 mb-3">
+                <div class="ticket-box sec-box">
+                  <a href="">
+                    <i class="pe-7s-ticket"></i>
+                    <span>Tickets </span>
+                  </a>
+                  <span class="count-object">{{ tickets.count }}</span>
+                </div>
+              </section>
+            </section>
+          </section>
+       
+        <section class="row mt-2">
+          <section class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title text-center">Répartition par statut de congés</h4>
+                <canvas id="leaveChart" style="height: 250px; max-height: 250px;"></canvas>
+              </div>
+            </div>
+          </section>
+          <section class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title text-center">Distribution des destinations</h4>
+                <canvas id="ticketChart" style="height: 250px; max-height: 250px;"></canvas>
+              </div>
+            </div>
+          </section>
+        </section>
+        </section>
+        
+    </section>
+{% endblock content %}
+
+{% block extrajs %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Initialize both charts after DOM is loaded
+        $(document).ready(function() {
+            // Welcome notification
+            var get_login_user = '{{request.user.username}}';
+            $.notify({
+                title: '<strong>Bienvenue!</strong>',
+                icon: 'fa fa-user',
+                message: "Bienvenue à TUNISAIR Express site ," + get_login_user
+            }, {
+                type: 'info',
+                timer: 4000
+            });
+
+            // Initialize leave chart
+            const leaveLabels = {{ leave_labels|safe }};
+            const leaveCounts = {{ leave_counts|safe }};
+            const ctxLeave = document.getElementById('leaveChart').getContext('2d');
+            if (ctxLeave) {
+                new Chart(ctxLeave, {
+                    type: 'pie',
+                    data: {
+                        labels: leaveLabels,
+                        datasets: [{
+                            label: 'Nombre de congés',
+                            data: leaveCounts,
+                            backgroundColor: [
+                                '#007bff',
+                                '#28a745',
+                                '#ffc107',
+                                '#dc3545',
+                                '#17a2b8'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            title: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Initialize destination chart with pastel colors
+            const destinationLabels = {{ destination_labels|safe }};
+            const destinationCounts = {{ destination_counts|safe }};
+            const ctxTicket = document.getElementById('ticketChart').getContext('2d');
+            if (ctxTicket) {
+                // Pastel color palette
+                const pastelColors = [
+                    'rgba(255, 165, 0, 0.8)',    // Orange pastel
+                    'rgba(160, 102, 255, 0.8)',  // Purple pastel
+                    'rgba(255, 105, 180, 0.8)',  // Pink pastel
+                    'rgba(255, 192, 203, 0.8)',  // Light pink pastel
+                    'rgba(255, 218, 185, 0.8)',  // Peach pastel
+                    'rgba(173, 216, 230, 0.8)'   // Light blue pastel
+                ];
+
+                // Generate colors for each bar
+                const colors = [];
+                destinationLabels.forEach((label, index) => {
+                    colors.push(pastelColors[index % pastelColors.length]);
+                });
+
+                new Chart(ctxTicket, {
+                    type: 'bar',
+                    data: {
+                        labels: destinationLabels,
+                        datasets: [{
+                            label: 'Nombre de tickets',
+                            data: destinationCounts,
+                            backgroundColor: colors,
+                            borderColor: colors.map(color => color.replace('0.8', '1')),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            },
+                            title: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Initialize Chartist
+            demo.initChartist();
+        });
+    </script>
+{% endblock extrajs %}

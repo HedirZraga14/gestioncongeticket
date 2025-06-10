@@ -1,0 +1,221 @@
+{% extends '_layout.html' %}
+
+{% block title %}Calendrier{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block navheader %}
+    {% include 'includes/navheader_employee_app.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+<!-- Police moderne -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f5f7fa;
+        color: #2d3436;
+    }
+
+    .summary-container h3.title {
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+    .summary-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s;
+    }
+
+    .summary-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .summary-card h3 {
+        font-size: 18px;
+        color: #34495e;
+        margin-bottom: 10px;
+    }
+
+    .stat-number {
+        font-size: 32px;
+        font-weight: 600;
+        color: #2980b9;
+    }
+
+    .stat-label {
+        font-size: 14px;
+        color: #7f8c8d;
+    }
+
+    .card {
+        border: none;
+        border-radius: 12px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        padding: 25px;
+        margin-bottom: 35px;
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card .title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #2d3436;
+        margin-bottom: 10px;
+    }
+
+    .fc {
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    #calendar {
+        margin-top: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            {% if not request.user.is_superuser %}
+            <!-- Résumé du mois -->
+            <div class="col-md-12 summary-container">
+                <h3 class="title">Résumé du mois ({{ current_month }})</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="summary-card">
+                            <h3>Congés en attente</h3>
+                            <div class="stat-number">{{ pending_leaves }}</div>
+                            <div class="stat-label">Demandes non traitées</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="summary-card">
+                            <h3>Billets en attente</h3>
+                            <div class="stat-number">{{ pending_tickets }}</div>
+                            <div class="stat-label">Demandes non traitées</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Space between sections -->
+            <div class="col-md-12" style="height: 40px;"></div>
+            {% endif %}
+
+            {% if  request.user.is_superuser %}
+            <!-- Notes Section -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h3 class="title">Mes Notes</h3>
+                    </div>
+                    <div class="content">
+                        <!-- Notes Form -->
+                        <form method="POST" action="{% url 'dashboard:add_note' %}" class="notes-form mb-4">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="note_title">Titre</label>
+                                <input type="text" class="form-control" id="note_title" name="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="note_content">Contenu</label>
+                                <textarea class="form-control" id="note_content" name="content" rows="4" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="note_date">Date</label>
+                                <input type="date" class="form-control" id="note_date" name="date" value="{{ today|date:'Y-m-d' }}" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Ajouter la note</button>
+                        </form>
+                        
+                        <!-- Notes List -->
+                        {% if notes %}
+                        <div class="notes-list">
+                            <h4>Mes notes récentes</h4>
+                            <div class="notes-container">
+                                {% for note in notes %}
+                                <div class="note-item mb-3">
+                                    <div class="note-header">
+                                        <h5>{{ note.title }}</h5>
+                                        <small class="text-muted">{{ note.date }}</small>
+                                    </div>
+                                    <p>{{ note.content }}</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="text-center py-4">
+                            <p class="text-muted">Aucune note pour ce mois</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+                
+            <!-- Infos du jour -->
+            <div class="col-md-12">
+                <div class="card" style="animation: fadeInUp 0.5s ease-out 0.2s;">
+                    <div class="header">
+                        <h2 class="title">Aujourd'hui</h2>
+                    </div>
+                    <div class="content text-center">
+                        <h3>Date actuelle : {{ current_day }} {{ today|date:"j" }} {{ current_month }}</h3>
+                        <p class="lead">{{ today|date:"d/m/Y" }}</p>
+                    </div>
+                </div>
+            </div>
+
+            
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<!-- FullCalendar -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    if (!calendarEl) return;
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'fr',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        initialDate: new Date(),
+        dateClick: function(info) {
+            alert('Date sélectionnée : ' + info.dateStr);
+        },
+        events: [], // Tu peux ajouter des événements ici
+    });
+
+    calendar.render();
+});
+</script>
+{% endblock %}

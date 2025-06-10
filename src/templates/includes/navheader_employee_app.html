@@ -1,0 +1,168 @@
+ {% load static %}
+ <nav class="navbar navbar-default navbar-fixed shadow">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+                        <span class="sr-only">Basculer la navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!-- <a class="navbar-brand" href="">Dashboard </a> -->
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-left">
+
+                        <li>
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class=""></i>
+                                <p class="hidden-lg hidden-md">Dashboard</p>
+                            </a>
+                        </li>
+
+                        
+                        <li class="dropdown">
+                              <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                    <p>
+                                        Congés
+                                        <b class="caret"></b>
+                                    </p>
+
+                              </a>
+                              <ul class="dropdown-menu">
+                                {% if request.user.is_superuser %}
+                                <li><a href="{% url 'dashboard:leaveslist' %}">Congés en attente</a></li>
+                                <li><a href="{% url 'dashboard:approvedleaveslist' %}">Congés acceptés</a></li>
+                                <li><a href="{% url 'dashboard:canceleaveslist' %}">Congés annulés</a></li>
+                                <li><a href="{% url 'dashboard:leavesrejected' %}">Congés refusés</a></li>
+                                <li class="divider"></li>
+                                 <li><a href="{% url 'dashboard:leaves' %}">liste des Congés </a></li>
+                                {% else %}
+                                <li><a href="{% url 'dashboard:createleave' %}">Demander un congé</a></li>
+                                <li class="divider"></li>
+                                <li><a href="{% url 'dashboard:staffleavetable' %}">Liste des congés</a></li>
+                                {% endif %}
+                              </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                  <p>
+                                      Billets
+                                      <b class="caret"></b>
+                                  </p>
+
+                            </a>
+                            <ul class="dropdown-menu">
+                              {% if request.user.is_superuser %}
+                              <li><a href="{% url 'dashboard:ticketslist' %}"> billets en attente</a></li>
+                              <li><a href="{% url 'dashboard:approvedticketslist' %}">billets acceptés</a></li>
+                              <li><a href="{% url 'dashboard:ticketsrejected' %}">billets refusés</a></li>
+                              <li class="divider"></li>
+                              <li><a href="{% url 'dashboard:tickets' %}">liste de billets </a></li>
+                              
+
+                              {% else %}
+                              <li><a href="{% url 'dashboard:createticket' %}">Demander un billet</a></li>
+                              <li><a href="{% url 'dashboard:stafftickettable' %}">Liste des billets</a></li>
+                              
+                             
+
+                              {% endif %}
+                            </ul>
+                      </li>
+                      {% if request.user.is_superuser and request.user.is_staff %}
+                      <li class="dropdown">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                  <p>
+                                      Bénéficiaire
+                                      <b class="caret"></b>
+                                  </p>
+
+                            </a>
+                         <ul class="dropdown-menu">
+                            <li><a href="{% url 'dashboard:beneficiairecreate' %}">Ajouter bénéficiaire</a></li>
+                            <li><a href="{% url 'dashboard:beneficiaires' %}">Liste des bénéficiaires </a></li>
+                         </ul>
+                       </li>
+                         {% endif %}    
+
+                        {% if request.user.is_superuser and request.user.is_staff %}
+                        <li class="dropdown">
+                              <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                    <p>
+                                        Employée
+                                        <b class="caret"></b>
+                                    </p>
+
+                              </a>
+                              <ul class="dropdown-menu">
+                                <li><a href="{% url 'dashboard:employeecreate' %}">Ajouter employé</a></li>
+                                <li><a href="{% url 'dashboard:employees' %}">Liste des employés </a></li>
+                                <li class="divider"></li>
+                                
+                                
+                                <li><a href="{% url 'accounts:erasedusers' %}">les employés supprimés</a></li>
+                              </ul>
+                        </li>
+                        {% endif %}
+                       
+
+                        
+                        {% if request.user.is_superuser and request.user.is_staff %}
+                        <li class="dropdown">
+                              <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                    <p>
+                                        Utilisateurs
+                                        <b class="caret"></b>
+                                    </p>
+
+                              </a>
+                              <ul class="dropdown-menu">
+                                <li><a href="{% url 'accounts:register' %}">Créer un utilisateur</a></li>
+                                <li><a href="{% url 'accounts:users' %}">Liste des utilisateurs</a></li>
+                              </ul>
+                        </li>
+                        {% endif %}
+
+
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        
+
+                        <li class="dropdown">
+                              <a href="" class="dropdown-toggle refresh-page" data-toggle="dropdown" title="refresh current page">
+                                    <i class="pe-7s-refresh-2"></i>
+                                    <b class="hidden-lg hidden-md"></b>
+                                    <p class="hidden-lg hidden-md">
+                                        Actualiser
+                                    
+                                    </p>
+                              </a>
+                        </li>
+
+                        <li class="dropdown">
+                              <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                    <p>
+                                        <i class="fa fa-user"></i> {{ request.user}}
+                                        <b class="caret"></b>
+                                    </p>
+
+                              </a>
+                              <ul class="dropdown-menu">
+                                {% if request.user.is_authenticated %}
+                                <li><a href="{% url 'accounts:logout'  %}">Déconnecter</a></li>
+                                {% else %}
+                                <li><a href="{% url 'accounts:login'  %}">Se connecter</a></li>
+                                {% endif %}
+                                <li><a href="{% url 'accounts:changepassword' %}">Changer le mot de passe</a></li>
+                                
+                              </ul>
+                        </li>
+
+                        <li class="separator hidden-lg"></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>

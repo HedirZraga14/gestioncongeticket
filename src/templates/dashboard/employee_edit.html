@@ -1,0 +1,180 @@
+{% extends '_layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block navheader %}
+    {% include 'includes/navheader_employee_app.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+
+    .form-wrapper {
+        -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+        padding: 2%;
+        background: #fff !important;
+        padding-bottom: 5%;
+        border-radius: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid #e0e0e0;
+        padding: 0.75rem;
+        border-radius: 5px;
+        font-size: 0.95rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+    }
+
+    .btn-lg {
+        padding: 0.75rem 2rem;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-success {
+        background-color: #4CAF50;
+        border-color: #4CAF50;
+    }
+
+    .btn-success:hover {
+        background-color: #45a049;
+        border-color: #45a049;
+    }
+
+    .btn-outline-secondary {
+        border: 1px solid #6c757d;
+        color: #6c757d;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .main-panel > .content {
+        padding: 60px 15px;
+        min-height: calc(100% - 123px);
+    }
+
+    .alert-warning {
+        background: #fd7b7b;
+        border: none;
+        padding: 1rem;
+        border-radius: 5px;
+    }
+
+    .alert-success {
+        background-color: #82b72a;
+        border: none;
+        padding: 1rem;
+        border-radius: 5px;
+    }
+
+    .close {
+        opacity: 1;
+        color: white !important;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #495057;
+        margin-bottom: 0.5rem;
+    }
+
+    .prev-holder .prev-avatar {
+        border-radius: 50%;
+        width: 250px;
+        height: 250px;
+        -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    }
+
+{% endblock %}
+
+{% block content %}
+<section class="content">
+    <section class="container-fluid">
+        <section class="row">
+            <section class="col col-sm-8 offset-sm-2">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div {% if message.tags %} class="alert {{ message.tags }}"{% endif %}>
+                            {{ message }}
+                            <button type="button" class="close" id="override-start" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </section>
+        </section>
+
+        <section class="form-wrapper">
+            <section class="row">
+                <section class="col-lg-12 col-md-12 col-sm-12 text-center">
+                    <h4 class="mb-4">Modifier Employé</h4>
+                    <small class="text-muted">Modifier les informations de : <strong>{{ form.instance.get_full_name }}</strong></small>
+                </section>
+
+                <section class="col-lg-12">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form.employeeid|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.lastname|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form.firstname|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.email|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form.employeetype|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.birthday|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form.image|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                {{ form.user|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <a href="{% url 'dashboard:edit' id=form.instance.id %}" class="btn btn-outline-primary btn-lg"> Modifier </a>
+                            <a href="{% url 'dashboard:employees' %}" class="btn btn-outline-secondary btn-lg">↩️ Annuler</a>
+                        </div>
+                    </form>
+                </section>
+            </section>
+        </section>
+    </section>
+</section>
+{% endblock %}
+

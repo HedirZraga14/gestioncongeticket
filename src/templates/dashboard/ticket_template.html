@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>OEBTR</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                margin: 0;
+                padding: 0;
+                color: black;
+            }
+            
+            header {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            
+            .logo {
+                width: 100px;
+                height: auto;
+                margin: 0 auto;
+            }
+            
+            h1 {
+                font-size: 24px;
+                color: black;
+            }
+            
+            section {
+                margin: 20px;
+            }
+            
+            .list-group {
+                margin: 0 auto;
+                max-width: 600px;
+            }
+            
+            .list-group-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: none;
+                border-bottom: 1px solid #ddd;
+                padding: 10px;
+            }
+            
+            .list-group-item span {
+                font-weight: bold;
+                font-size: 18px;
+                color: black;
+            }
+            
+            .list-group-item div {
+                flex: 1;
+                text-align: left;
+                font-size: 50px;
+                color: black;
+            }
+            
+            .conteneur {
+                width: 100%;
+                float: left;
+            }
+            
+            .droit {
+                width: 200px;
+                float: right;
+            }
+            
+            h5 {
+                margin-top: 0;
+            }
+            footer {
+           
+                padding: 20px;
+                text-align: right;
+            }
+            
+    </style>
+</head>
+<body>
+    <header>
+        <img src="{% static 'img/tn.png' %}" alt="Logo de votre entreprise" class="logo">
+        <h1>Ordre d'émission de billet à tarif réduit</h1>
+    </header>
+    <section>
+        <h2>Informations du billet</h2>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <span>Nom et prénom :</span> {{ ticket.user }}<br>
+            </li>
+            <li class="list-group-item">
+                <span>Date :</span> {{ ticket.date }}<br>
+            </li>
+            <li class="list-group-item">
+                <span>Destination :</span> {{ ticket.destination }}<br>
+            </li>
+            <li class="list-group-item">
+                <span>Compagnie :</span> {{ ticket.compagnie }}<br>
+            </li>
+            <li class="list-group-item">
+                <span>Pour moi-même :</span> {{ ticket.vous }}<br>
+            </li>
+            <li class="list-group-item">
+                <span>Bénéficiaires :</span> {{ ticket.beneficiaires }}<br>
+            </li>
+            <li class="list-group-item">
+                <span>Retraité :</span> {{ ticket.retraité }}<br>
+            </li>
+            <li class="list-group-item">
+                <span>Statut :</span> {{ ticket.statut }}<br>
+            </li>
+        </ul>
+    </section>
+    <footer>
+        <div class="conteneur">
+            <p>_________________________________________________________________________________________________</p>
+            <div class="droit">
+                <h5>Signature</h5><br>
+                <p>Tunisair Express</p><br>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,202 @@
+{% extends '_layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block navheader %}
+ 	{% include 'includes/navheader_employee_app.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+	.fa-eye,.fa-pencil{
+	   	margin-right: 5px;
+	}
+
+	.table-shadow{
+		background: white;
+		padding: 2%;
+		box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+	}
+
+	h4{
+		margin:2px 0 5px 0 !important;
+	}
+
+	.download-print-action{
+		padding-bottom: 12px;
+	}
+
+	#override-start{
+		background:none !important;
+		top: 35% !important;
+		right:13px;
+		color:#000;
+		font-size: 24px;
+	}
+
+	.alert-warning{
+		background:#fd7b7b;
+	}
+
+	.alert-success {
+		background-color: #82b72a;
+	}
+
+	.alert-success,.alert-warning{
+		font-size:16px;
+	}
+
+	.sec-box{
+		height:80px;
+		max-width:100%;
+		line-height:80px;
+		text-align:center;
+		position:relative;
+		font-size:1.9rem;
+		box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+		transition: all 400ms ease-in;
+		font-variant: petite-caps;
+	}
+
+	.sec-box a{
+		color:#fff;
+		text-decoration:none;
+	}
+
+	.employee-box{ background:#3f9a26; }
+	.leave-box{ background:#fff; }
+	.leave-box a{ color:#3ea7c7 !important; }
+	.birthday-box{ background:#8664ad; }
+	.deleted-box{ background:#d42828; }
+	.company-box{ background:#868686; }
+	.margin-bottom{ margin-bottom:1.4rem; }
+
+	.count-object {
+		position: absolute;
+		top: 31%;
+		right: 12px;
+		font-size: 25px;
+		font-weight: 100;
+		font-variant: petite-caps;
+		color: #f5f5f5;
+		text-shadow:1px 1px rgba(8, 8, 8, 0.23);
+	}
+
+	.deprt{ color:#4195bd !important; }
+
+	#stylebutton{
+		background: #60a0b3 !important;
+		color: #fff !important;
+		font-variant: petite-caps !important;
+		font-size: 14px !important;
+	}
+
+	.input-group-btn + input:focus{ outline:#60a0b3; }
+
+	.table {
+		border-collapse: collapse;
+		width: 100%;
+	}
+	.table th,
+	.table td {
+		border: 1px solid #ddd;
+		padding: 20px;
+		text-align: left;
+	}
+	.table th {
+		background-color: #f2f2f2;
+		font-weight: bold;
+		width: 40%;
+	}
+	.table tr:nth-child(even) {
+		background-color: #f2f2f2;
+	}
+	.table tr:hover {
+		background-color: #ddd;
+	}
+	.table td:last-child {
+		text-align: right;
+	}
+	h3{
+		color: black;
+		text-align:center;
+	}
+{% endblock %}
+
+{% block content %}
+<section class="content">
+    <section class="container-fluid">
+    	<section class="row">
+    		<section class="col col-lg-12">
+    			<a href="{{request.META.HTTP_REFERER|escape}}" style="color:#c1c1c1;">Retour</a>
+    		</section>
+    	</section>
+
+    	<section class="row">
+            <section class="col col-sm-8 offset-sm-2">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                            {{ message }}
+                            <button type="button" class="close" id="override-start" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </section>
+        </section>
+
+        <section class="row margin-bottom">
+        	<div class="container-fluid">
+        		<section class="col-lg-12">
+        			<div class="employeetab">
+						<a href="">
+							<h3>liste des Employés</h3>
+						</a>
+						<span class="count-object">{{ all_employees.count }}</span>
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Prénom</th>
+									<th>Nom</th>
+									<th>Email</th>
+									<th>Département</th>
+									<th>Type</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for employee in employees %}
+									<tr>
+										<td>{{ employee.id }}</td>
+										<td>{{ employee.firstname }}</td>
+										<td>{{ employee.lastname }}</td>
+										<td>{{ employee.email }}</td>
+										<td>{{ employee.department }}</td>
+										<td>{{ employee.employeetype }}</td>
+										<td>
+											<a href="{% url 'dashboard:editform' employee.id %}" class="btn btn-sm btn-primary">
+												<i class="fa fa-pencil"></i> Modifier
+											</a>
+										</td>
+									</tr>
+								{% empty %}
+									<tr><td colspan="7">Aucun employé trouvé.</td></tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+        		</section>
+        	</div>
+        </section>
+    </section>
+</section>
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+// JS if needed later
+</script>
+{% endblock %}

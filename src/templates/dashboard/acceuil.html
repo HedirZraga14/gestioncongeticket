@@ -1,0 +1,282 @@
+{% extends '_layout.html' %}
+{% load static %}
+
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="display-4 font-weight-bold text-primary">Bienvenue à TUNISAIR Express</h1>
+                <h3 class="lead mt-4 text-white custom-lead">
+                Votre solution complète pour la gestion des congés et des billets
+                </h3>
+
+
+               <div class="mt-4">
+                <a href="{% url 'dashboard:ticketcreate' %}" class="custom-btn">Demander une billet</a>
+                <a href="{% url 'dashboard:createleave' %}" class="custom-btn">Demander un congé</a>
+               </div>
+
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'img/tnsrr.png' %}" alt="TUNISAIR Express Logo" class="img-fluid" style="max-height: 300px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<section class="features-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Nos Services</h2>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card service-card h-100 border-0">
+                    <div class="card-body text-center">
+                        <i class="fa fa-sign-in fa-3x text-warning mb-3"></i>
+                        <h3>Gestion des Congés</h3>
+                        <p>Demandez, suivez et gérez vos congés facilement</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card service-card h-100 border-0">
+                    <div class="card-body text-center">
+                        <i class="fa fa-ticket fa-3x text-success mb-3"></i>
+                        <h3>Gestion des billets</h3>
+                        <p>Suivez vos demandes et billets en temps réel</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Actions Section -->
+<section class="quick-actions-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Actions Rapides</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card action-card bg-warning text-white h-100">
+                    <div class="card-body text-center">
+                        <i class="fa fa-sign-in fa-3x mb-3 text-success"></i>
+                        <h4>Demande de Congé</h4>
+                        <a href="{% url 'dashboard:createleave' %}" class="btn btn-light">Demander</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card action-card bg-success text-white h-100">
+                    <div class="card-body text-center ">
+                        <i class="fa fa-ticket fa-3x mb-3  text-primary"></i>
+                        <h4>Nouveau billet</h4>
+                        <a href="{% url 'dashboard:ticketcreate' %}" class="btn btn-light">Créer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card action-card bg-info text-white h-100">
+                    <div class="card-body text-center">
+                        <i class="fa fa-file-text fa-3x mb-3 text-info"></i>
+                        <h4>Historique</h4>
+                        <a href="{% url 'dashboard:leaves' %}" class="btn btn-light">Voir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<style>
+
+.custom-lead {
+  font-weight: 700;
+  color:rgb(25, 16, 104) ;
+}
+  
+.custom-btn {
+  display: inline-block;
+  padding: 14px 28px;
+  margin-right: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.custom-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+}
+
+    .hero-section {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("{% static 'img/plain4.jpg' %}") center center / cover no-repeat fixed;
+    filter: blur(5px);
+    z-index: 1;
+}
+
+.hero-section::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.05); /* Optional dark overlay */
+    z-index: 2;
+}
+
+.hero-section > * {
+    position: relative;
+    z-index: 3;
+}
+
+    
+    .features-section .card {
+        transition: transform 0.3s ease;
+        width: 450px;
+        height: 250px;
+        margin: 10px;
+        display: flex;
+        background-color: rgb(225, 227, 229);
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .features-section .card:hover {
+        transform: translateY(-5px);
+        width: 450px;
+        height: 250px;
+        margin: 10px;
+        display: flex;
+        background-color: rgb(156, 158, 160);
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .quick-actions-section .card {
+        transition: transform 0.3s ease;
+        width: 250px;
+        height: 250px;
+        margin: 10px;
+        display: flex;
+        background-color: aliceblue;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .quick-actions-section .card:hover {
+        transform: translateY(-5px);
+        
+    }
+    
+    .stat-card {
+        padding: 2rem;
+        background: rgb(248, 244, 244);
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        width: 150px;
+        height: 150px;
+        margin: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .stat-card i {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
+        padding: 15px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .stat-card i:hover {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.3));
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .stat-card h3 {
+        margin: 1rem 0;
+        font-weight: bold;
+    }
+    
+    .stat-card p {
+        margin-bottom: 0;
+    }
+</style>
+{% endblock content %}
+
+{% block extrajs %}
+<script>
+$(document).ready(function() {
+    // Welcome notification
+    var get_login_user = '{{request.user.username}}';
+    $.notify({
+        title: '<strong>Bienvenue!</strong>',
+        icon: 'fa fa-user',
+        message: "Bienvenue à TUNISAIR Express site ," + get_login_user
+    }, {
+        type: 'info',
+        timer: 4000
+    });
+
+    // Smooth scroll for navigation
+    $('a[href*="#"]:not([href="#"])').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+            if (target.length) {
+                $('html, body').animate({
+                    scrollTop: target.offset().top
+                }, 1000);
+                return false;
+            }
+        }
+    });
+});
+</script>
+{% endblock extrajs %}

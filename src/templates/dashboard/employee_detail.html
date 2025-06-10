@@ -1,0 +1,275 @@
+
+{% extends '_layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% load humanize %}
+
+ {% block navheader %}
+ 	{% include 'includes/navheader_employee_app.html' %}
+ {% endblock %}
+
+
+ 
+  {% block stylesheet %}
+  	.rounded-circle-image{
+  	border-radius: 50% !important;
+  	width:250px;
+  	height:250px;
+  }
+
+  .profile-wrapper{
+  background:#fff;
+  -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+
+  padding-top: 10px;
+
+}
+
+
+.list-group {
+	margin-top: 10px;
+}
+
+span{
+	color: #c7c7c7;
+  font-weight: lighter;
+  font-size: 14px;
+}
+
+
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    font-size:17px;
+}
+
+  #override-start{
+    background:none !important;
+    top: 35% !important;
+    right:13px;
+    color:#000;
+    font-size: 24px;
+
+    }
+
+    .alert-warning{
+        background:#fd7b7b;
+    }
+
+    .alert-success {
+        background-color: #82b72a;
+    }
+
+    .alert-success,.alert-warning{
+        font-size:16px;
+    }
+
+    .employee-name-title{
+    color: #3873b1;
+    font-weight: 600;
+    font-variant: petite-caps;
+    font-size: 3.1rem !important;
+  }
+
+  span,.list-group-item > div{
+  font-variant: petite-caps;
+}
+
+
+.panel-default>.panel-heading {
+    color: #fff !important;
+    background-color: #2d88a9 !important;
+}
+
+.panel-title a:hover{
+  color:#e6e4e4;
+}
+
+.panel-title a:active{
+  color:#e6e4e4;
+}
+
+.panel-title a:focus{
+  color:#e6e4e4;
+}
+
+
+
+
+
+{% endblock %}<!-- STYLESHEETS -->
+
+
+
+
+        <!--CONTENTS-->
+ {% block content %}
+        <section class="content">
+            <section class="container-fluid">
+              <section class="row">
+                <section class="col col-lg-12">
+                  <span><a href="{{request.META.HTTP_REFERER|escape}}" style="color:#565656;">Retour</a></span>
+                </section>
+              </section>
+                      <section class="row">
+                        <section class="col col-lg-12 col-md-12  col-sm-12">
+                            {% if  messages %}
+                                    {% for message in messages %}
+                                     <div {% if message.tags %} class="{{ message.tags}}"{% endif %}>
+                                         {{ message }}
+                                         <button type="button" class="close" id = "override-start"data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                         </button>
+                                     </div>
+                                    {% endfor %}
+                            {% endif %}
+
+                        </section>
+                    </section>
+            		<section class="row">
+            			<section class="text-center">
+            				<h3><span class="employee-name-title">{{ employee.get_full_name}}</span></h3>
+            			</section>
+            		</section>
+
+                	<section class="row">
+                	<section class="col col-lg-4 col-md-4 col-sm-12 profile-wrapper">
+                    {% if employee.image %}
+      						  <img src="{{ employee.image.url}}" class="img-fluid rounded-circle-image" >
+                    {% else %}
+                    <img src="/media/default.png" class="img-fluid rounded-circle-image" />
+                    {% endif %}
+        						  <section class="text-centered" style="margin-top: 3px;">
+        						    
+            							<ul class="list-group">
+              					  		<li class="list-group-item"><span>nom </span> <div>{{ employee.get_full_name }}</div></li>
+              					  		
+                              {% if employee.email %}
+                              <li class="list-group-item"><span>Email</span> <div>{{ employee.email}}</div></li>
+                              {% endif %}
+                              <li class="list-group-item"><span>Départment</span> <div>{{ employee.department}}</div></li>
+                              <li class="list-group-item"><span>Type d'employé</span> <div>{{ employee.employeetype}}</div></li>
+                              <li class="list-group-item"><span>fonction</span> <div>{{ employee.role}}</div></li>
+              					  		<li class="list-group-item"><span>Date de naissance</span> <div>{{ employee.birthday}}</div></li>
+                              <li class="list-group-item"><span>Age </span><div>{{ employee.get_age }}</div></li>
+
+              					  		{% if employee.is_blocked %}
+              					  		<li class="list-group-item"><span>Status</span> <div>Inactive</div></li>
+              					  		{% else %}
+              					  		<li class="list-group-item"><span>Status</span><div> active</div></li>
+              					  		{% endif %}
+                              <div>
+                                <span style="font-style: italic;">Mis à jour - {{employee.updated|naturaltime}}</span>
+                              </div>
+                              
+            							</ul>
+        						  </section>
+						        </section><!-- /profile-wrappper -->
+              			<section class="col col-lg-8" >
+                            <!-- ACCORDIAN - COLLAPSIBLE -->
+                            <!-- 1 Personal Detail -->
+                         
+                          
+                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+                        <!-- PERSONAL INFORMATION -->
+                        <div class="panel panel-default">
+                          <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                 INFORMATIONS PERSONNEL 
+                              </a>
+                            </h4>
+                          </div>
+                          <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                              <div class="container-fluid">
+                                <div class="row">
+                                  <div class="col col-lg-6">
+                                    
+                                            {% if employee.firstname %}
+                                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Prénom</span> <div> {{ employee.firstname}} </div>
+                                            </a>
+                                            {% endif %}
+
+                                            {% if employee.lastname %}
+                                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Nom</span> <div> {{ employee.lastname }} </div>
+                                            </a>
+                                            {% endif %}
+
+                                           
+
+
+                                            <!-- recent added 29/03/19 -->
+                                            {% if employee.email %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Email </span><div>{{ employee.email }} </div>
+                                            </a>
+                                            {% endif %}
+                                         
+
+
+
+                                            {% if employee.birthday %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Date de naissance</span><div>{{ employee.birthday}}</div></a>
+                                            {% endif %}
+
+
+                                            {% if employee.employeeid %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span> Matricule Employé </span> <div>{{ employee.employeeid }}</div></a>
+                                            {% endif %}
+
+                                            {% if request.user.is_superuser %}
+                                            <div>
+                                              <span><a href="{% url 'dashboard:edit' employee.id %}">Modifier</a></span>
+                                            </div>
+
+                                            {% endif %}
+
+                                          </div>
+
+                                  </div>
+                                  <!-- Here working -->
+                                  <div class="col col-lg-6">
+                                       
+                                            {% if employee.startdate %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Date d'embauche</span> <div>{{ employee.startdate  }}</div></a>
+                                            {% endif %}
+
+
+                                           <div>
+                                            <span>Dernière mise à jour - {{employee.updated|naturaltime }}</span>
+                                          </div>
+                                        
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- /PERSONAL INFORMATION -->
+
+
+
+                      </div><!-- /ACCORDION PARENT -->
+
+
+
+                		</section>
+                 	</section><!-- /Row -->
+
+            </section> <!-- /container --> 
+
+
+        </section><!-- /content -->
+ {% endblock %}
+
+<script type="text/javascript">
+{% block extrajs%}
+
+{% endblock %}
+</script>

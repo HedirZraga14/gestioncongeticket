@@ -1,0 +1,189 @@
+{% extends '_layout.html' %}
+
+{% block title %}Profil - {{ user.username }}{% endblock %}
+
+{% block stylesheet %}
+<style>
+    .profile-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        padding: 2rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .profile-image {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #4ECDC4;
+    }
+
+    .profile-info {
+        flex: 1;
+    }
+
+    .profile-info h1 {
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .profile-info h4 {
+        color: #666;
+        margin-bottom: 1rem;
+    }
+
+    .profile-section {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .profile-section h3 {
+        color: #333;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #4ECDC4;
+        padding-bottom: 0.5rem;
+    }
+
+    .profile-section ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .profile-section li {
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .profile-section i {
+        color: #4ECDC4;
+    }
+
+    .badge {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        margin-right: 0.5rem;
+    }
+
+    .badge-primary {
+        background-color: #4ECDC4;
+        color: white;
+    }
+
+    .badge-secondary {
+        background-color: #f8f9fa;
+        color: #666;
+    }
+
+    @media (max-width: 768px) {
+        .profile-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+        .profile-image {
+            margin: 0 auto;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <img src="{{ emp.image.url if emp and emp.image else 'https://via.placeholder.com/150' }}" alt="{{ user.username }}" class="profile-image">
+        <div class="profile-info">
+            <h1>{{ user.username }}</h1>
+            <h4>{{ emp.firstname if emp else 'Informations non renseignées' }}</h4>
+            <div class="employee-type">
+                <span class="badge badge-primary">{{ emp.get_employeetype_display if emp else 'Non défini' }}</span>
+            </div>
+        </div>
+    </div>
+
+    {% if request.user.is_superuser %}
+    <div class="profile-section">
+        <h3>Gestion du Profil</h3>
+        <form method="POST" enctype="multipart/form-data" class="profile-form">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.firstname.label_tag }}
+                {{ form.firstname }}
+            </div>
+            <div class="form-group">
+                {{ form.lastname.label_tag }}
+                {{ form.lastname }}
+            </div>
+            <div class="form-group">
+                {{ form.birthday.label_tag }}
+                {{ form.birthday }}
+            </div>
+            <div class="form-group">
+                {{ form.department.label_tag }}
+                {{ form.department }}
+            </div>
+            <div class="form-group">
+                {{ form.image.label_tag }}
+                {{ form.image }}
+            </div>
+            <div class="form-group">
+                {{ form.employeetype.label_tag }}
+                {{ form.employeetype }}
+            </div>
+            <div class="form-group">
+                {{ form.is_blocked.label_tag }}
+                {{ form.is_blocked }}
+            </div>
+            <div class="form-group">
+                {{ form.is_deleted.label_tag }}
+                {{ form.is_deleted }}
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="profile-section">
+        <h3>Informations de Contact</h3>
+        <ul>
+            <li><i class="pe-7s-mail"></i> {{ user.email }}</li>
+            <li><i class="pe-7s-user"></i> {{ emp.firstname }} {{ emp.lastname }}</li>
+            <li><i class="pe-7s-date"></i> Date de naissance : {{ emp.birthday|date:"d/m/Y" }}</li>
+            <li><i class="pe-7s-home"></i> Département : {{ emp.department.name }}</li>
+        </ul>
+    </div>
+
+    <div class="profile-section">
+        <h3>Statut</h3>
+        <ul>
+            <li><i class="pe-7s-check"></i> Compte : {% if user.is_active %}<span class="badge badge-success">Actif</span>{% else %}<span class="badge badge-danger">Inactif</span>{% endif %}</li>
+            <li><i class="pe-7s-unlock"></i> Statut : {% if emp.is_blocked %}<span class="badge badge-warning">Bloqué</span>{% else %}<span class="badge badge-success">Débloqué</span>{% endif %}</li>
+            <li><i class="pe-7s-trash"></i> Suppression : {% if emp.is_deleted %}<span class="badge badge-danger">Supprimé</span>{% else %}<span class="badge badge-success">Actif</span>{% endif %}</li>
+        </ul>
+    </div>
+
+    <div class="profile-section">
+        <h3>Activité</h3>
+        <ul>
+            <li><i class="pe-7s-clock"></i> Créé le : {{ emp.created|date:"d/m/Y H:i" }}</li>
+            <li><i class="pe-7s-refresh-2"></i> Mis à jour le : {{ emp.updated|date:"d/m/Y H:i" }}</li>
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,219 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<title> Gestion des congés et billets à tarifs réduit - bienvenue à notre site</title>
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+  <meta name="viewport" content="width=device-width" />
+  <!-- Bootstrap core CSS     -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/pe-icon-7-stroke.css' %}" rel="stylesheet" />
+
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Anton|Russo+One" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Alice" rel="stylesheet">
+  
+
+
+
+</head>
+<body>
+
+    <style type="text/css">
+      /* styles.css */
+
+      body {
+        position: relative;
+        background-color: grey;
+      }
+      
+      a {
+        font-variant: petite-caps;
+        font-weight: 100;
+        font-size: 16px;
+      }
+      
+      .navbar-brand {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #fff;
+      }
+      
+      .navbar-brand img {
+        width: 0px;
+        height: auto;
+        margin-right: 10px;
+      }
+      
+      .sub-title {
+        font-size: 0.8em;
+        margin-left: 5px;
+      }
+      
+      .logo-img {
+        width: 100px;
+        height: auto;
+      }
+      
+      h2 {
+        font-family: 'Alice', serif;
+        color: red;
+        font-size: 4.9rem;
+      }
+      
+      p {
+        font-variant: small-caps;
+        color: #cecece;
+      }
+      
+      p span {
+        color: #a5a5a5;
+        font-weight: bold;
+      }
+      
+      span.icon {
+        font-size: 15px;
+      }
+      
+      .content {
+        position: relative;
+        height: 100vh;
+      }
+      
+      .sub-title {
+        vertical-align: -webkit-baseline-middle;
+        font-size: 12px!important;
+        font-family: 'Luckiest Guy', cursive;
+      }
+      
+      .back-link {
+        color: #fff;
+        font-size: 2.6rem;
+        font-weight: 900;
+        transition: all 400ms ease-in-out;
+      }
+      
+      .back-link:hover {
+        color: #fff;
+        font-size: 2.8rem;
+        transition: all 400ms ease-in-out;
+      }
+      
+      .container-centered-items {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+      }
+      
+      .bg-black {
+        background-color: grey;
+      }
+      
+      .text-red {
+        color: black;
+      }
+      
+      .text-blue {
+        color: black;
+      }
+      
+      .btn-blue {
+        background-color: grey;
+        border-color: grey;
+      }
+      
+      .text-black {
+        color: white;
+      }
+
+    </style>
+
+    <!--CONTENTS-->
+ 
+    <section class="content">
+            <!-- Navigation -->
+                <nav class="navbar navbar-default">
+                      <div class="container-fluid">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                          </button>
+
+                          
+                        
+                       
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                          <ul class="nav navbar-nav">
+                              <img src="{% static '/img/tn.jpg' %}" alt="Tunisair Express Logo" style="width: 140px; height: 60px;">
+                           
+                            </ul>
+                          <ul class="nav navbar-nav">
+                            <li class=""><a href="https://www.tunisairexpress.net/" target="_blank">TUNISAIR Express site </a></li>
+                            
+                          </ul>
+                          <ul class="nav navbar-nav navbar-right">
+                            <li><a href="{% url 'accounts:login' %}">Se connecter</a></li>
+                          </ul>
+                        </div><!-- /.navbar-collapse -->
+                      </div><!-- /.container-fluid -->
+                </nav>
+            <!-- /Naivagtion -->
+           
+          
+            <div class="container-fluid container-centered-items bg-black">
+           
+              <div class="row">
+              
+                  <div class="col-lg-12 text-center">
+                     
+                      <div class="center-me-please">
+                          <h1 class="text-red">Système de gestion des congés et billets à tarifs réduit</h1>
+                          <p class="text-blue">Ce système vous permet de demander et gérer des congés et des billets à tarifs réduit.</p>
+                          <a class="btn btn-primary btn-lg btn-blue" href="{% url 'accounts:login' %}"><span class="text-black">Se connecter</span></a>
+
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+         </div>
+          
+     </section> <!-- /content -->
+    <div>
+       {% if request.user.is_authenticated %}
+                    <p style="position: absolute;bottom: 0;"><a href="{{request.META.HTTP_REFERER|escape}}" class="back-link" title="back to previous page"><i class="pe-7s-back-2"></i></a></p>
+       {% endif %}
+    </div>
+
+</body>
+
+    <!--   Core JS Files   -->
+  <script src="{% static 'js/jquery.3.2.1.min.js' %}" type="text/javascript"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}" type="text/javascript"></script>
+  
+
+
+	<script type="text/javascript">
+  
+  
+	</script>
+ 
+
+</html>

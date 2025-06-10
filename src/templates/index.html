@@ -1,0 +1,1379 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="/static/img/tnsrr.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  
+    <title> Gestion des congés et billets à tarifs réduit - bienvenue à notre site</title>
+  
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+    <!-- Bootstrap core CSS     -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/pe-icon-7-stroke.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/pe-icon-7-stroke.css' %}" rel="stylesheet" />
+  
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Anton|Russo+One" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Alice" rel="stylesheet">
+    
+  
+  
+  
+  </head>
+<body>
+  <style type="text/css">
+
+    /**
+    * Template Name: Dewi
+    * Template URL: https://bootstrapmade.com/dewi-free-multi-purpose-html-template/
+    * Updated: Mar 17 2024 with Bootstrap v5.3.3
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    */
+    
+    /*--------------------------------------------------------------
+    # General
+    --------------------------------------------------------------*/
+    body {
+      font-family: "Open Sans", sans-serif;
+      color: #444444;
+    }
+    
+    a {
+      color: #ff0000;
+      text-decoration: none;
+    }
+    
+    a:hover {
+      color: #ff0000;
+      text-decoration: none;
+    }
+    
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: "Raleway", sans-serif;
+    }
+    
+    /*--------------------------------------------------------------
+    # Back to top button
+    --------------------------------------------------------------*/
+    .back-to-top {
+      position: fixed;
+      visibility: hidden;
+      opacity: 0;
+      right: 15px;
+      bottom: 15px;
+      z-index: 996;
+      background: #ff0000;
+      width: 40px;
+      height: 40px;
+      border-radius: 4px;
+      transition: all 0.4s;
+    }
+    
+    .back-to-top i {
+      font-size: 24px;
+      color: #fff;
+      line-height: 0;
+    }
+    
+    .back-to-top:hover {
+      background: #ff0000;
+      color: #fff;
+    }
+    
+    .back-to-top.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    /*--------------------------------------------------------------
+    # Preloader
+    --------------------------------------------------------------*/
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9999;
+      overflow: hidden;
+      background: #fff;
+    }
+    
+    #preloader:before {
+      content: "";
+      position: fixed;
+      top: calc(50% - 30px);
+      left: calc(50% - 30px);
+      border: 6px solid #ff0000;
+      border-top-color: #ff0000;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: animate-preloader 1s linear infinite;
+    }
+    
+    @keyframes animate-preloader {
+      0% {
+        transform: rotate(0deg);
+      }
+    
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    /*--------------------------------------------------------------
+    # Disable aos animation delay on mobile devices
+    --------------------------------------------------------------*/
+    @media screen and (max-width: 768px) {
+      [data-aos-delay] {
+        transition-delay: 0 !important;
+      }
+    }
+    
+    /*--------------------------------------------------------------
+    # Header
+    --------------------------------------------------------------*/
+    #header {
+      transition: all 0.5s;
+      z-index: 997;
+      padding: 20px 0;
+    }
+    
+    #header.header-scrolled,
+    #header.header-inner-pages {
+      background: rgba(21, 34, 43, 0.85);
+      padding: 10px 0;
+    }
+    
+    #header .logo {
+      font-size: 32px;
+      margin: 0;
+      padding: 0;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+    
+    #header .logo a {
+      color: #fff;
+    }
+    
+    #header .logo img {
+      max-height: 40px;
+    }
+    
+    /*--------------------------------------------------------------
+    # Navigation Menu
+    --------------------------------------------------------------*/
+    /**
+    * Desktop Navigation 
+    */
+    .navbar {
+      padding: 0;
+    }
+    
+    .navbar ul {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      list-style: none;
+      align-items: center;
+    }
+    
+    .navbar li {
+      position: relative;
+    }
+    
+    .navbar>ul>li {
+      white-space: nowrap;
+      padding: 8px 12px;
+    }
+    
+    .navbar a,
+    .navbar a:focus {
+      display: flex;
+      align-items: center;
+      position: relative;
+      justify-content: space-between;
+      padding: 0 3px;
+      font-size: 14px;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      white-space: nowrap;
+      transition: 0.3s;
+    }
+    
+    .navbar a i,
+    .navbar a:focus i {
+      font-size: 12px;
+      line-height: 0;
+      margin-left: 5px;
+    }
+    
+    .navbar>ul>li>a:before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -6px;
+      left: 0;
+      background-color: #ff0000;
+      visibility: hidden;
+      width: 0px;
+      transition: all 0.3s ease-in-out 0s;
+    }
+    
+    .navbar a:hover:before,
+    .navbar li:hover>a:before,
+    .navbar .active:before {
+      visibility: visible;
+      width: 100%;
+    }
+    
+    .navbar a:hover,
+    .navbar .active,
+    .navbar .active:focus,
+    .navbar li:hover>a {
+      color: #ff0000;
+    }
+    
+    .navbar .getstarted,
+    .navbar .getstarted:focus {
+      padding: 12px 35px;
+      margin-left: 30px;
+      border-radius: 25px;
+      color: #ff0000;
+      border: 2px solid #ff0000;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      min-width: 150px;
+      text-align: center;
+      background: transparent;
+    }
+    
+    .navbar .getstarted:hover,
+    .navbar .getstarted:focus:hover {
+      color: #fff;
+      background: #ff0000;
+      border-color: #ff0000;
+    }
+    
+    .navbar>ul>li>.getstarted:before {
+      visibility: hidden;
+    }
+    
+    .navbar .dropdown ul {
+      display: block;
+      position: absolute;
+      left: 14px;
+      top: calc(100% + 30px);
+      margin: 0;
+      padding: 10px 0;
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      background: #ff0000;
+      box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+      transition: 0.3s;
+      border-radius: 4px;
+    }
+    
+    .navbar .dropdown ul li {
+      min-width: 200px;
+    }
+    
+    .navbar .dropdown ul a {
+      padding: 10px 20px;
+      font-size: 14px;
+      text-transform: none;
+      color: #ff0000;
+      font-weight: 400;
+    }
+    
+    .navbar .dropdown ul a i {
+      font-size: 12px;
+    }
+    
+    .navbar .dropdown ul a:hover,
+    .navbar .dropdown ul .active:hover,
+    .navbar .dropdown ul li:hover>a {
+      color: #ff0000;
+    }
+    
+    .navbar .dropdown:hover>ul {
+      opacity: 1;
+      top: 100%;
+      visibility: visible;
+    }
+    
+    .navbar .dropdown .dropdown ul {
+      top: 0;
+      left: calc(100% - 30px);
+      visibility: hidden;
+    }
+    
+    .navbar .dropdown .dropdown:hover>ul {
+      opacity: 1;
+      top: 0;
+      left: 100%;
+      visibility: visible;
+    }
+    
+    @media (max-width: 1366px) {
+      .navbar .dropdown .dropdown ul {
+        left: -90%;
+      }
+    
+      .navbar .dropdown .dropdown:hover>ul {
+        left: -100%;
+      }
+    }
+    
+    /**
+    * Mobile Navigation 
+    */
+    .mobile-nav-toggle {
+      color: #ff0000;
+      font-size: 28px;
+      cursor: pointer;
+      display: none;
+      line-height: 0;
+      transition: 0.5s;
+    }
+    
+    @media (max-width: 991px) {
+      .mobile-nav-toggle {
+        display: block;
+      }
+    
+      .navbar ul {
+        display: none;
+      }
+    }
+    
+    .navbar-mobile {
+      position: fixed;
+      overflow: hidden;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      background: rgba(4, 7, 9, 0.9);
+      transition: 0.3s;
+      z-index: 999;
+    }
+    
+    .navbar-mobile .mobile-nav-toggle {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+    
+    .navbar-mobile ul {
+      display: block;
+      position: absolute;
+      top: 55px;
+      right: 15px;
+      bottom: 15px;
+      left: 15px;
+      padding: 10px 0;
+      border-radius: 10px;
+      background-color: #ff0000;
+      overflow-y: auto;
+      transition: 0.3s;
+    }
+    
+    .navbar-mobile a,
+    .navbar-mobile a:focus {
+      padding: 10px 20px;
+      font-size: 15px;
+      color: #15222b;
+    }
+    
+    .navbar-mobile a:hover,
+    .navbar-mobile .active,
+    .navbar-mobile li:hover>a {
+      color: black;
+    }
+    
+    .navbar-mobile .getstarted,
+    .navbar-mobile .getstarted:focus {
+      margin: 15px;
+    }
+    
+    .navbar-mobile .dropdown ul {
+      position: static;
+      display: none;
+      margin: 10px 20px;
+      padding: 10px 0;
+      z-index: 99;
+      opacity: 1;
+      visibility: visible;
+      background: #ff0000;
+      box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+    }
+    
+    .navbar-mobile .dropdown ul li {
+      min-width: 200px;
+    }
+    
+    .navbar-mobile .dropdown ul a {
+      padding: 10px 20px;
+    }
+    
+    .navbar-mobile .dropdown ul a i {
+      font-size: 12px;
+    }
+    
+    
+    .navbar-mobile .dropdown>.dropdown-active {
+      display: block;
+    }
+    
+    /*--------------------------------------------------------------
+    # Hero Section
+    --------------------------------------------------------------*/
+ 
+    #hero {
+      width: 100%;
+      height: 80vh;
+      background: url("/static/img/plain4.jpg") top center;
+      background-size: cover;
+      position: relative;
+      padding: 0;
+    }
+
+    #hero:before {
+      content: "";
+      background: rgba(13, 20, 26, 0.7);
+      position: absolute;
+      bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+    
+    #hero .hero-container {
+      position: absolute;
+      bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    #hero h1 {
+      margin: 0 0 10px 0;
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 56px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    
+    #hero h2 {
+      color: #eee;
+      margin-bottom: 50px;
+      font-size: 24px;
+    }
+    #hero .btn-get-started {
+      font-family: "Open Sans", sans-serif;
+      text-transform: uppercase;
+      font-weight: 700; /* changed from 500 to 700 for bold text */
+      font-size: 14px;
+      display: inline-block;
+      padding: 10px 40px 10px 40px;
+      border-radius: 4px;
+      transition: 0.5s;
+      color: #fff;
+      background: #ff0000;
+      border: 2px solid #ff0000;
+    }
+    
+    #hero .btn-get-started:hover {
+      border-color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    
+    #hero .btn-watch-video:hover i {
+      color: #ff0000;
+    }
+    
+    @media (min-width: 1024px) {
+      #hero {
+        background-attachment: fixed;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      #hero h1 {
+        font-size: 28px;
+        line-height: 36px;
+      }
+    
+      #hero h2 {
+        font-size: 18px;
+        line-height: 24px;
+        margin-bottom: 30px;
+      }
+    }
+    
+    /*--------------------------------------------------------------
+    # Sections General
+    --------------------------------------------------------------*/
+    section {
+      padding: 60px 0;
+      overflow: hidden;
+    }
+    
+    .section-bg {
+      background-color: #ff0000;
+    }
+    
+    .section-title {
+      padding-bottom: 40px;
+    }
+    
+    .section-title h2 {
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0;
+      line-height: 1px;
+      margin: 0 0 5px 0;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #5c8eb0;
+      font-family: "Poppins", sans-serif;
+    }
+    
+    .section-title h2::after {
+      content: "";
+      width: 120px;
+      height: 1px;
+      display: inline-block;
+      background: #ff0000;
+      margin: 4px 10px;
+    }
+    
+    .section-title p {
+      margin: 0;
+      margin: 0;
+      font-size: 36px;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-family: "Poppins", sans-serif;
+      color: #263d4d;
+    }
+    
+   
+  
+    
+    /*--------------------------------------------------------------
+    # Contact
+    --------------------------------------------------------------*/
+    .contact .info-box {
+      color: #444444;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(214, 215, 216, 0.6);
+      padding: 20px 0 30px 0;
+    }
+    
+    .contact .info-box i {
+      font-size: 32px;
+      color: #ff0000;
+      border-radius: 50%;
+      padding: 8px;
+    }
+    
+    .contact .info-box h3 {
+      font-size: 20px;
+      color: #777777;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+    
+    .contact .info-box p {
+      padding: 0;
+      line-height: 24px;
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+    
+    .contact .php-email-form {
+      box-shadow: 0 0 30px rgba(214, 215, 216, 0.6);
+      padding: 30px;
+    }
+    
+    .contact .php-email-form .error-message {
+      display: none;
+      color: #fff;
+      background: #ed3c0d;
+      text-align: left;
+      padding: 15px;
+      font-weight: 600;
+    }
+    
+    .contact .php-email-form .error-message br+br {
+      margin-top: 25px;
+    }
+    
+    .contact .php-email-form .sent-message {
+      display: none;
+      color: #fff;
+      background: #18d26e;
+      text-align: center;
+      padding: 15px;
+      font-weight: 600;
+    }
+    
+    .contact .php-email-form .loading {
+      display: none;
+      background: #fff;
+      text-align: center;
+      padding: 15px;
+    }
+    
+    .contact .php-email-form .loading:before {
+      content: "";
+      display: inline-block;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      margin: 0 10px -6px 0;
+      border: 3px solid #18d26e;
+      border-top-color: #eee;
+      animation: animate-loading 1s linear infinite;
+    }
+    
+    .contact .php-email-form input,
+    .contact .php-email-form textarea {
+      border-radius: 0;
+      box-shadow: none;
+      font-size: 14px;
+      border-radius: 4px;
+    }
+    
+    .contact .php-email-form input:focus,
+    .contact .php-email-form textarea:focus {
+      border-color: #ff0000;
+    }
+    
+    .contact .php-email-form input {
+      padding: 10px 15px;
+    }
+    
+    .contact .php-email-form textarea {
+      padding: 12px 15px;
+    }
+    
+    .contact .php-email-form button[type=submit] {
+      background: #ff0000;
+      border: 0;
+      padding: 10px 24px;
+      color: #fff;
+      transition: 0.4s;
+      border-radius: 4px;
+    }
+    
+    .contact .php-email-form button[type=submit]:hover {
+      background: #ff0000;
+    }
+    
+    @keyframes animate-loading {
+      0% {
+        transform: rotate(0deg);
+      }
+    
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    /*--------------------------------------------------------------
+    # Breadcrumbs
+    --------------------------------------------------------------*/
+    .breadcrumbs {
+      padding: 15px 0;
+      background: #f0f4f8;
+      min-height: 40px;
+      margin-top: 78px;
+    }
+    
+    .breadcrumbs h2 {
+      font-size: 28px;
+      font-weight: 400;
+    }
+    
+    .breadcrumbs ol {
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .breadcrumbs ol li+li {
+      padding-left: 10px;
+    }
+    
+    .breadcrumbs ol li+li::before {
+      display: inline-block;
+      padding-right: 10px;
+      color: #263d4d;
+      content: "/";
+    }
+    
+    @media (max-width: 992px) {
+      .breadcrumbs {
+        margin-top: 52px;
+      }
+    
+      .breadcrumbs .d-flex {
+        display: block !important;
+      }
+    
+      .breadcrumbs ol {
+        display: block;
+      }
+    
+      .breadcrumbs ol li {
+        display: inline-block;
+      }
+    }
+    
+    /*--------------------------------------------------------------
+    # Footer
+    --------------------------------------------------------------*/
+    #footer {
+      background: #121d24;
+      padding: 0 0 30px 0;
+      color: #fff;
+      font-size: 14px;
+    }
+    
+    #footer .footer-top {
+      background: #15222b;
+      border-bottom: 1px solid #1d303c;
+      padding: 60px 0 30px 0;
+    }
+    
+    #footer .footer-top .footer-info {
+      margin-bottom: 30px;
+    }
+    
+    #footer .footer-top .footer-info h3 {
+      font-size: 28px;
+      margin: 0 0 15px 0;
+      padding: 2px 0 2px 0;
+      line-height: 1;
+      font-weight: 700;
+    }
+    
+    #footer .footer-top .footer-info p {
+      font-size: 14px;
+      line-height: 24px;
+      margin-bottom: 0;
+      font-family: "Raleway", sans-serif;
+      color: #fff;
+    }
+    
+    #footer .footer-top .social-links a {
+      font-size: 18px;
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      line-height: 1;
+      padding: 8px 0;
+      margin-right: 4px;
+      border-radius: 4px;
+      text-align: center;
+      width: 36px;
+      height: 36px;
+      transition: 0.3s;
+    }
+    
+    #footer .footer-top .social-links a:hover {
+      background: #ff4a17;
+      color: #fff;
+      text-decoration: none;
+    }
+    
+    #footer .footer-top h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      position: relative;
+      padding-bottom: 12px;
+    }
+    
+    #footer .footer-top .footer-links {
+      margin-bottom: 30px;
+    }
+    
+    #footer .footer-top .footer-links ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    #footer .footer-top .footer-links ul i {
+      padding-right: 2px;
+      color: #ff5e31;
+      font-size: 18px;
+      line-height: 1;
+    }
+    
+    #footer .footer-top .footer-links ul li {
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+    }
+    
+    #footer .footer-top .footer-links ul li:first-child {
+      padding-top: 0;
+    }
+    
+    #footer .footer-top .footer-links ul a {
+      color: #fff;
+      transition: 0.3s;
+      display: inline-block;
+      line-height: 1;
+    }
+    
+    #footer .footer-top .footer-links ul a:hover {
+      color: #ff0000;
+    }
+    
+    #footer .footer-top .footer-newsletter form {
+      margin-top: 30px;
+      background: #fff;
+      padding: 6px 10px;
+      position: relative;
+      border-radius: 4px;
+    }
+    
+    #footer .footer-top .footer-newsletter form input[type=email] {
+      border: 0;
+      padding: 4px;
+      width: calc(100% - 110px);
+    }
+    
+    #footer .footer-top .footer-newsletter form input[type=submit] {
+      position: absolute;
+      top: 0;
+      right: -2px;
+      bottom: 0;
+      border: 0;
+      background: none;
+      font-size: 16px;
+      padding: 0 20px;
+      background: #ff0000;
+      color: #fff;
+      transition: 0.3s;
+      border-radius: 0 4px 4px 0;
+    }
+    
+    #footer .footer-top .footer-newsletter form input[type=submit]:hover {
+      background: #ff0000;
+    }
+    
+    #footer .copyright {
+      text-align: center;
+      padding-top: 30px;
+    }
+    
+    #footer .developer-info {
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    #footer .developer-info a {
+      color: #ff0000;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    
+    #footer .developer-info a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+    
+    #footer .credits {
+      padding-top: 10px;
+      text-align: center;
+      font-size: 13px;
+      color: #ff0000;
+    }
+    
+    #footer .credits a {
+      transition: 0.3s;
+    }
+    .red-icon {
+  color: red;
+}
+.red-icon:hover {
+  color: #ff0000;
+}
+.navbar-nav > li > a {
+  font-weight: 600;
+  font-size: 20px;
+}
+.facebook-btn {
+  background-color: #1877F2;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+  </style>
+
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+      <li>
+        <img src="/static/img/tnsrr.png" alt="Tunisair Express Logo" style="width: 160px; height: 70px;">
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="{% url 'accounts:login' %}">Se connecter</a></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+ 
+  <!-- ======= Hero Section ======= -->
+  <section id="hero">
+    <div class="hero-container" data-aos="fade-up" data-aos-delay="150">
+      <h1 class="text-red">Système de gestion des congés <br> et billets à tarifs réduit</h1>
+      <h2>Ce système vous permet de demander et gérer des congés et des billets à tarifs réduit.</h2>
+      <div class="d-flex">
+      <a href="{% url 'accounts:login' %}" class="btn-get-started scrollto">se Connecter</a>
+      </div>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container" data-aos="fade-up">
+
+    <div class=" section-title">
+        <h2>Contact</h2>
+        <p>Contactez-nous</p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-lg-6">
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="info-box">
+                <i class="pe-7s-map-marker red-icon"></i>
+                <h3>Notre Addresse</h3>
+                <p>10 Rue de l'Artisanat. Z.I Charguia II.2035 Tunis Carthage</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-box mt-4 red-icon">
+                <i class="pe-7s-mail"></i>
+                <h3>Notre Email </h3>
+                <p>support@tunisairexpress.com.tn</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-box mt-4 red-icon">
+                <i class="pe-7s-call"></i>
+                <h3>Appelez-nous</h3>
+                <p>+216 70 101 300</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-lg-6">
+            <img src="/static/img/vac.jpg" height="300px" width="550px">
+        </div>
+      </div>
+
+      </div>
+    </section><!-- End Contact Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-info">
+              <h3>TUNISAIR Express</h3>
+              <p>
+                10 Rue de l'Artisanat. Z.I  <br>
+                Charguia II.2035 Tunis Carthag<br><br>
+                <strong>Tél:</strong> +216 70 101 300<br>
+                <strong>Email:</strong> support@tunisairexpress.com.tn<br>
+              </p>
+            
+            </div>
+          </div>
+
+       
+
+         
+
+          <div class="col-lg-5 col-md-6 footer-newsletter">
+            <h4> Plus d'Informations ..</h4>
+            <p>REJOIGNEZ-NOUS</p>
+        
+             <a href="https://www.facebook.com/ugflights" class="facebook-btn">Facebook</a>
+            
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>Tunisair express</span></strong>. Tous droits réservés
+      </div>
+      <div class="developer-info">
+         Développé par <a href="https://www.linkedin.com/in/zraga-hedir/" target="_blank">Hedir Zraga</a>
+       </div>
+       <div class="credits">
+         <!-- All the links in the footer should remain intact. -->
+         <!-- You can delete the links only if you purchased the pro version. -->
+         <!-- Licensing information: https://bootstrapmade.com/license/ -->
+         <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/dewi-free-multi-purpose-html-template/ -->
+       </div>
+     </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+ <!--   Core JS Files   -->
+ <script src="{% static 'js/jquery.3.2.1.min.js' %}" type="text/javascript"></script>
+ <script src="{% static 'js/bootstrap.min.js' %}" type="text/javascript"></script>
+ 
+
+
+ <script type="text/javascript">
+ /**
+* Template Name: Dewi
+* Template URL: https://bootstrapmade.com/dewi-free-multi-purpose-html-template/
+* Updated: Mar 17 2024 with Bootstrap v5.3.3
+* Author: BootstrapMade.com
+* License: https://bootstrapmade.com/license/
+*/
+
+(function() {
+  "use strict";
+
+  /**
+   * Easy selector helper function
+   */
+  const select = (el, all = false) => {
+    el = el.trim()
+    if (all) {
+      return [...document.querySelectorAll(el)]
+    } else {
+      return document.querySelector(el)
+    }
+  }
+
+  /**
+   * Easy event listener function
+   */
+  const on = (type, el, listener, all = false) => {
+    let selectEl = select(el, all)
+    if (selectEl) {
+      if (all) {
+        selectEl.forEach(e => e.addEventListener(type, listener))
+      } else {
+        selectEl.addEventListener(type, listener)
+      }
+    }
+  }
+
+  /**
+   * Easy on scroll event listener 
+   */
+  const onscroll = (el, listener) => {
+    el.addEventListener('scroll', listener)
+  }
+
+  /**
+   * Navbar links active state on scroll
+   */
+  let navbarlinks = select('#navbar .scrollto', true)
+  const navbarlinksActive = () => {
+    let position = window.scrollY + 200
+    navbarlinks.forEach(navbarlink => {
+      if (!navbarlink.hash) return
+      let section = select(navbarlink.hash)
+      if (!section) return
+      if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
+        navbarlink.classList.add('active')
+      } else {
+        navbarlink.classList.remove('active')
+      }
+    })
+  }
+  window.addEventListener('load', navbarlinksActive)
+  onscroll(document, navbarlinksActive)
+
+  /**
+   * Scrolls to an element with header offset
+   */
+  const scrollto = (el) => {
+    let header = select('#header')
+    let offset = header.offsetHeight
+
+    if (!header.classList.contains('header-scrolled')) {
+      offset -= 20
+    }
+
+    let elementPos = select(el).offsetTop
+    window.scrollTo({
+      top: elementPos - offset,
+      behavior: 'smooth'
+    })
+  }
+
+  /**
+   * Toggle .header-scrolled class to #header when page is scrolled
+   */
+  let selectHeader = select('#header')
+  if (selectHeader) {
+    const headerScrolled = () => {
+      if (window.scrollY > 100) {
+        selectHeader.classList.add('header-scrolled')
+      } else {
+        selectHeader.classList.remove('header-scrolled')
+      }
+    }
+    window.addEventListener('load', headerScrolled)
+    onscroll(document, headerScrolled)
+  }
+
+  /**
+   * Back to top button
+   */
+  let backtotop = select('.back-to-top')
+  if (backtotop) {
+    const toggleBacktotop = () => {
+      if (window.scrollY > 100) {
+        backtotop.classList.add('active')
+      } else {
+        backtotop.classList.remove('active')
+      }
+    }
+    window.addEventListener('load', toggleBacktotop)
+    onscroll(document, toggleBacktotop)
+  }
+
+  /**
+   * Mobile nav toggle
+   */
+  on('click', '.mobile-nav-toggle', function(e) {
+    select('#navbar').classList.toggle('navbar-mobile')
+    this.classList.toggle('bi-list')
+    this.classList.toggle('bi-x')
+  })
+
+  /**
+   * Mobile nav dropdowns activate
+   */
+  on('click', '.navbar .dropdown > a', function(e) {
+    if (select('#navbar').classList.contains('navbar-mobile')) {
+      e.preventDefault()
+      this.nextElementSibling.classList.toggle('dropdown-active')
+    }
+  }, true)
+
+  /**
+   * Scrool with ofset on links with a class name .scrollto
+   */
+  on('click', '.scrollto', function(e) {
+    if (select(this.hash)) {
+      e.preventDefault()
+
+      let navbar = select('#navbar')
+      if (navbar.classList.contains('navbar-mobile')) {
+        navbar.classList.remove('navbar-mobile')
+        let navbarToggle = select('.mobile-nav-toggle')
+        navbarToggle.classList.toggle('bi-list')
+        navbarToggle.classList.toggle('bi-x')
+      }
+      scrollto(this.hash)
+    }
+  }, true)
+
+  /**
+   * Scroll with ofset on page load with hash links in the url
+   */
+  window.addEventListener('load', () => {
+    if (window.location.hash) {
+      if (select(window.location.hash)) {
+        scrollto(window.location.hash)
+      }
+    }
+  });
+
+  /**
+   * Preloader
+   */
+  let preloader = select('#preloader');
+  if (preloader) {
+    window.addEventListener('load', () => {
+      preloader.remove()
+    });
+  }
+
+  /**
+   * Initiate glightbox 
+   */
+  const glightbox = GLightbox({
+    selector: '.glightbox'
+  });
+
+  /**
+   * Testimonials slider
+   */
+  new Swiper('.testimonials-slider', {
+    speed: 600,
+    loop: true,
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false
+    },
+    slidesPerView: 'auto',
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'bullets',
+      clickable: true
+    }
+  });
+
+  function getCurrentScroll() {
+    return window.pageYOffset || document.documentElement.scrollTop;
+  }
+
+  /**
+   * Porfolio isotope and filter
+   */
+  window.addEventListener('load', () => {
+
+    let portfolioContainer = select('.portfolio-container');
+
+    if (portfolioContainer) {
+      let portfolioIsotope = new Isotope(portfolioContainer, {
+        itemSelector: '.portfolio-item'
+      });
+
+      let portfolioFilters = select('#portfolio-flters li', true);
+
+      on('click', '#portfolio-flters li', function(e) {
+        e.preventDefault();
+        portfolioFilters.forEach(function(el) {
+          el.classList.remove('filter-active');
+        });
+        this.classList.add('filter-active');
+
+        portfolioIsotope.arrange({
+          filter: this.getAttribute('data-filter')
+        });
+        portfolioIsotope.on('arrangeComplete', function() {
+          AOS.refresh()
+        });
+
+      }, true);
+    }
+
+  });
+
+  /**
+   * Initiate portfolio lightbox 
+   */
+  const portfolioLightbox = GLightbox({
+    selector: '.portfolio-lightbox'
+  });
+
+  /**
+   * Portfolio details slider
+   */
+  new Swiper('.portfolio-details-slider', {
+    speed: 400,
+    loop: true,
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'bullets',
+      clickable: true
+    }
+  });
+
+  /**
+   * Animation on scroll
+   */
+  window.addEventListener('load', () => {
+    AOS.init({
+      duration: 1000,
+      easing: "ease-in-out",
+      once: true,
+      mirror: false
+    });
+  });
+
+  /**
+   * Initiate Pure Counter 
+   */
+  new PureCounter();
+
+})()
+ 
+ </script>
+
+
+
+</html>
+

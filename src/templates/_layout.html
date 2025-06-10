@@ -1,0 +1,294 @@
+{% load static %}
+
+{% load humanize %}
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" type="image/png" href="{% static 'assets/img/favicon.ico'%}">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<title>Dashboard - TUNISAIR Express | {% block title %} {{ title }} {% endblock %}</title>
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="author" content="Hedir zraga <Fullstack Developer/>,mail - hedirzraga@gmail.com">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Anton|Russo+One" rel="stylesheet">
+
+    <!-- Bootstrap core CSS     -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+
+    <!-- Animation library for notifications   -->
+    <link href="{% static 'css/animate.min.css' %}" rel="stylesheet"/>
+
+    <!--  Light Bootstrap Table core CSS    -->
+    <link href="{% static 'css/light-bootstrap-dashboard.css' %}" rel="stylesheet"/>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="{% static 'css/demo.css' %}" rel="stylesheet" />
+
+
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <link href="{% static 'css/pe-icon-7-stroke.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+</head>
+<body>
+
+
+    <style type="text/css">
+
+        .title-h3{
+        font-weight: bold;
+        font-variant: petite-caps;
+    }
+
+
+     .sidebar{
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2); 
+     transition: all 400ms ease-in;
+    }
+    
+    .sidebar:hover{
+        -webkit-box-shadow: 0 8px 17px 2px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 17px 2px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2);
+    }
+
+
+    .shadow{
+        box-shadow:0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+     }
+
+     .logo {
+        text-align: center; /* Alignement du contenu au centre */
+    }
+    
+    .simple-text {
+        text-decoration: none; /* Supprime la décoration du lien */
+        color: #333; /* Couleur du texte */
+    }
+    
+    .simple-text:hover {
+        color: #555; /* Couleur du texte au survol */
+    }
+    
+    .logo img {
+        width: 100px; /* Largeur de l'image */
+        height: auto; /* Hauteur automatique pour maintenir les proportions */
+    }
+
+    .sub-title{
+        vertical-align: -webkit-baseline-middle;
+        font-size: 12px;
+        font-family: 'Luckiest Guy', cursive;
+    }
+
+
+    tr td{
+        font-variant: petite-caps;
+    }
+
+    {% block stylesheet %}
+     
+     
+    {% endblock %}
+    </style>
+
+<div class="wrapper">
+    <div class="sidebar" data-color="blue" data-image="{% static 'img/plain4.jpg' %}">
+
+    <!--
+
+        Tip 1: you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple"
+        Tip 2: you can also add an image using data-image tag
+
+    -->
+
+    	<div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="#" class="simple-text">
+                    <img src="{% static '/img/tnsrr.png' %}" alt="Tunisair Express Logo"style="width: 180px; height:60px;">
+                </a>
+            </div>
+            
+
+            <ul class="nav">
+                
+                
+                {% if request.user.is_superuser and request.user.is_staff %}
+                <li class="active">
+                    <a href="{% url 'dashboard:dashboard' %}">
+                        <i class="pe-7s-graph"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                {% else %}
+                <li class="">
+                    <a href="{% url 'dashboard:acceuil' %}">
+                        <i class="pe-7s-home"></i>
+                        <p>Acceuil</p>
+                    </a>
+                </li>
+                {% endif %}
+            
+                
+                {% if request.user.is_superuser and request.user.is_staff %}
+                <li>
+                    <a href="{% url 'dashboard:employeecreate' %}">
+                        <i class="pe-7s-user"></i>
+                        <p>Employée</p>
+                    </a>
+                </li>
+                {% endif %}
+           
+            
+
+                <li>
+                    {% if request.user.is_superuser %}<a href="{% url 'dashboard:leaves' %}">{% else %}<a href="{% url 'dashboard:staffleavetable' %}"> {% endif %}
+                        <i class="pe-7s-news-paper"></i>
+                        <p>congés</p>
+                    </a>
+                </li>
+                <li>
+                    {% if request.user.is_superuser %}<a href="{% url 'dashboard:tickets' %}">{% else %}<a href="{% url 'dashboard:stafftickettable' %}"> {% endif %}
+                        <i class="pe-7s-ticket"></i>
+                        <p>Billets</p>
+                    </a>
+                </li>
+             
+                <li>
+                    <a href="{% url 'dashboard:calendrier' %}">
+                        <i class="pe-7s-date"></i>
+                        <p>Calendrier</p>
+                    </a>
+                </li>
+                <li> <p>_________________________</p></li>
+
+                {% if request.user.is_superuser %}
+                <li>
+                    <a href="{% url 'accounts:user_profile' %}">
+                        <i class="pe-7s-user"></i>
+                        <p>Mon Profil</p>
+                    </a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{% url 'dashboard:user_profile' request.user.id %}">
+                        <i class="pe-7s-user"></i>
+                        <p>Mon Profil</p>
+                    </a>
+                </li>
+
+                {% endif %}
+                <li>
+                    <a href="{% url 'dashboard:help' %}">
+                        <i class="pe-7s-info"></i>
+                        <p>aide</p>
+                    </a>
+                </li>
+                
+            </ul>
+    	</div>
+
+
+    </div>
+
+    <div class="main-panel">
+    <!--EVERY APP DEFINES ITS ROUTES  -->
+    {% block navheader %}
+        {% include 'includes/navheader_default.html' %}
+    {% endblock %}
+    <!-- NAVHEADER -->       
+
+        
+    <!--CONTENTS-->
+    {% block content %}
+    <section class="content">
+        <section class="container-fluid">
+              
+
+        </section> <!-- /container -->           
+     </section>
+    {% endblock %}
+    <!--/CONTENTS-->
+
+        
+        
+    </div>
+</div>
+
+
+</body>
+
+
+
+    <!--   Core JS Files   -->
+    <script src="{% static 'js/jquery.3.2.1.min.js' %}" type="text/javascript"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}" type="text/javascript"></script>
+
+	<!--  Charts Plugin -->
+	<script src="{% static 'js/chartist.min.js' %}"></script>
+
+    <!--  Notifications Plugin    -->
+    <script src="{% static 'js/bootstrap-notify.js' %}"></script>
+
+    <!--  Google Maps Plugin    -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+
+    <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
+	<script src="{% static 'js/light-bootstrap-dashboard.js' %}"></script>
+
+	<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
+	<script src="{% static 'js/demo.js' %}"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+     </script>
+{% block extrajs%}
+<script type="text/javascript">
+
+
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('.prev-holder .prev-avatar').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    
+    $(document).ready(function(){
+
+        $('.refresh-page').click(function(){
+            /*Script refreshes the page*/
+            console.log('refresh page clicked !!!');
+            location.reload(true);
+
+        });
+
+
+        $( "#id_birthday,#id_dateissued,#id_startdate,#id_enddate" ).datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+
+
+    });
+    
+	</script>
+  {% endblock %}
+</html>
+
+

@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Titre de congé</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: black; /* Couleur du texte */
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: black; /* Couleur du texte */
+        }
+        .list-group {
+            margin: 0 auto;
+            max-width: 600px;
+        }
+        .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+        .list-group-item span {
+            font-weight: bold;
+            font-size: 18px;
+            color: black; /* Couleur du texte */
+        }
+        .list-group-item div {
+            flex: 1;
+            text-align: left; /* Alignement du texte à gauche */
+            font-size: 18px;
+            color: black; /* Couleur du texte */
+        }
+        .logo {
+            width: 100px;
+            height: auto;
+        }
+        footer {
+           
+            padding: 20px;
+            text-align: right;
+        }
+        .conteneur {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .droit {
+            margin-top: 20px;
+        }
+        .signature {
+            width: 150px;
+            height: 50px;
+            border: 1px solid black; /* Bordure noire autour de la signature */
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <p> tunisair express </p>
+    <h1>Titre de congé</h1>
+    <img src="{% static 'img/tn.png' %}" alt="Logo de votre entreprise" class="logo">
+    <section class="col-lg-8 col-md-12 col-sm-12">
+        <div class="list-group" id="list-tab" role="tablist">
+            <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="" role="tab" aria-controls="">
+                <div><span> nom et prénom:   </span>{{ leave.user }}</div>
+            </a>
+            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="" role="tab" aria-controls="">
+                <div><span>Date début:    </span>{{ leave.startdate }}</div>
+            </a>
+            <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="" role="tab" aria-controls="">
+                <div><span>Date fin:   </span>{{ leave.enddate }}
+            </a>
+            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls="">
+                <div><span>Durée:   </span>{{ leave.leave_days }}</div>
+            </a>
+            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls="">
+                <div><span>Motif:   </span>{{ leave.leavetype }}</div>
+            </a>
+            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls="">
+                <div><span>Status:     </span>{{ leave.status }}</div>
+            </a>
+        </div>
+    </section>
+    <footer>
+        <div class="conteneur">
+            <p>_________________________________________________________________________________________________</p>
+            <div class="droit">
+                <h5>Signature</h5><br>
+                <p>Tunisair Express</p><br>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
