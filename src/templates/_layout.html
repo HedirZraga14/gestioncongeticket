@@ -126,47 +126,57 @@
                 
                 
                 {% if request.user.is_superuser and request.user.is_staff %}
-                <li class="active">
-                    <a href="{% url 'dashboard:dashboard' %}">
-                        <i class="pe-7s-graph"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
+               
+                    <li class="{% if request.resolver_match.url_name == 'analytics' %}active{% endif %}">
+                        <a href="{% url 'dashboard:analytics' %}">
+                            <i class="pe-7s-graph3"></i>
+                            <p>Analytics</p>
+                        </a>
+                    </li>
+                    <li class="{% if request.resolver_match.url_name == 'monthly_report' %}active{% endif %}">
+                        <a href="{% url 'dashboard:monthly_report' %}">
+                            <i class="pe-7s-file"></i>
+                            <p>Rapports</p>
+                        </a>
+                    </li>
                 {% else %}
-                <li class="">
-                    <a href="{% url 'dashboard:acceuil' %}">
-                        <i class="pe-7s-home"></i>
-                        <p>Acceuil</p>
-                    </a>
-                </li>
+                
+                    <li class="{% if request.resolver_match.url_name == 'acceuil' %}active{% endif %}">
+                        <a href="{% url 'dashboard:acceuil' %}">
+                            <i class="pe-7s-home"></i>
+                            <p>Acceuil</p>
+                        </a>
+                    </li>
                 {% endif %}
             
                 
                 {% if request.user.is_superuser and request.user.is_staff %}
-                <li>
+                <li class="{% if request.resolver_match.url_name == 'employeecreate' %}active{% endif %}">
                     <a href="{% url 'dashboard:employeecreate' %}">
                         <i class="pe-7s-user"></i>
                         <p>Employée</p>
                     </a>
                 </li>
+                
+
                 {% endif %}
            
             
 
-                <li>
+                <li class="{% if request.resolver_match.url_name in 'leaves,staffleavetable' %}active{% endif %}">
                     {% if request.user.is_superuser %}<a href="{% url 'dashboard:leaves' %}">{% else %}<a href="{% url 'dashboard:staffleavetable' %}"> {% endif %}
                         <i class="pe-7s-news-paper"></i>
                         <p>congés</p>
                     </a>
                 </li>
-                <li>
+                <li class="{% if request.resolver_match.url_name in 'tickets,stafftickettable' %}active{% endif %}">
                     {% if request.user.is_superuser %}<a href="{% url 'dashboard:tickets' %}">{% else %}<a href="{% url 'dashboard:stafftickettable' %}"> {% endif %}
                         <i class="pe-7s-ticket"></i>
                         <p>Billets</p>
                     </a>
                 </li>
              
-                <li>
+                <li class="{% if request.resolver_match.url_name == 'calendrier' %}active{% endif %}">
                     <a href="{% url 'dashboard:calendrier' %}">
                         <i class="pe-7s-date"></i>
                         <p>Calendrier</p>
@@ -175,27 +185,23 @@
                 <li> <p>_________________________</p></li>
 
                 {% if request.user.is_superuser %}
-                <li>
-                    <a href="{% url 'accounts:user_profile' %}">
-                        <i class="pe-7s-user"></i>
-                        <p>Mon Profil</p>
-                    </a>
-                </li>
                 {% else %}
-                <li>
+                {% if request.user.id %}
+                <li class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}">
                     <a href="{% url 'dashboard:user_profile' request.user.id %}">
                         <i class="pe-7s-user"></i>
                         <p>Mon Profil</p>
                     </a>
                 </li>
-
                 {% endif %}
-                <li>
+                {% endif %}
+                <li class="{% if request.resolver_match.url_name == 'help' %}active{% endif %}">
                     <a href="{% url 'dashboard:help' %}">
                         <i class="pe-7s-info"></i>
                         <p>aide</p>
                     </a>
                 </li>
+
                 
             </ul>
     	</div>

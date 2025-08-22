@@ -169,3 +169,7 @@ MEDIA_URL = '/media/'
 # MEDIA FILES WILL BE SERVED FROM STATIC_CDN WHEN WE ARE LIVE
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR),'static_cdn','media_root')
 
+# Login redirect configuration
+LOGIN_REDIRECT_URL = '/dashboard/redirect/'
+LOGIN_URL = '/accounts/login/'
+

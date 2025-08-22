@@ -158,6 +158,45 @@ span{
                                             </a>
                                              <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Status</span> <div>{{ leave.status}}</div>
                                              </a>
+                                             
+                                             {% if ai_data %}
+                                             <!-- Section Analyse IA -->
+                                             <div class="card mt-3">
+                                                 <div class="card-header bg-info text-white">
+                                                     <h5><i class="fas fa-robot"></i> Analyse IA</h5>
+                                                 </div>
+                                                 <div class="card-body">
+                                                     <div class="row">
+                                                         <div class="col-md-6">
+                                                             <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                 <span><strong>Probabilité d'approbation:</strong></span>
+                                                                 <span class="badge badge-primary">{{ ai_data.approval_percentage }}</span>
+                                                             </div>
+                                                             <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                 <span><strong>Priorité IA:</strong></span>
+                                                                 <span class="badge badge-{{ ai_data.priority_color }}">{{ leave.ai_priority|default:"Non analysé" }}</span>
+                                                             </div>
+                                                             <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                 <span><strong>Score de priorité:</strong></span>
+                                                                 <span class="badge badge-secondary">{{ ai_data.priority_percentage }}</span>
+                                                             </div>
+                                                         </div>
+                                                         <div class="col-md-6">
+                                                             {% if leave.ai_approval_factors %}
+                                                             <div class="mb-2">
+                                                                 <strong>Facteurs d'approbation:</strong>
+                                                                 <small class="text-muted d-block">{{ leave.ai_approval_factors }}</small>
+                                                             </div>
+                                                             {% endif %}
+                                                             <div class="mb-2">
+                                                                 <strong>Date d'analyse:</strong>
+                                                                 <small class="text-muted d-block">{{ leave.ai_analysis_date|date:"d/m/Y H:i" }}</small>
+                                                             </div>
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                             </div>
+                                             {% endif %}
                                       </div>
                                       <a href="{% url 'dashboard:print_leave'  leave_id=leave.id  %}?template_path=leave_template.html&content=imprimer" class="btn btn-primary">Imprimer</a>
                                       

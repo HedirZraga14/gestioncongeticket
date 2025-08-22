@@ -1,110 +1,325 @@
+{% extends '_layout.html' %}
+
+{% block title %}Liste des Employés{% endblock %}
+
+{% block navheader %}
+    {% include 'includes/navheader_employee_app.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f5f7fa;
+        color: #2d3436;
+    }
+
+    .page-header {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    .page-header p {
+        font-size: 1.2rem;
+        color: #7f8c8d;
+        margin: 0;
+    }
+
+    .employees-container {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .employees-container:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .employees-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .employees-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 0;
+    }
+
+    .create-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .create-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .employees-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .employees-table th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+    }
+
+    .employees-table td {
+        padding: 15px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #2d3436;
+    }
+
+    .employees-table tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .employee-name {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .employee-department {
+        color: #7f8c8d;
+        font-style: italic;
+    }
+
+    .employee-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .action-btn {
+        padding: 8px 15px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .view-btn {
+        background: #3498db;
+        color: white;
+    }
+
+    .view-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .edit-btn {
+        background: #f39c12;
+        color: white;
+    }
+
+    .edit-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .status-badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .status-active {
+        background: #27ae60;
+        color: white;
+    }
+
+    .status-inactive {
+        background: #e74c3c;
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #7f8c8d;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #bdc3c7;
+        margin-bottom: 20px;
+    }
+
+    .empty-state h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: #2c3e50;
+    }
+
+    .empty-state p {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+        .employees-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .employees-table {
+            font-size: 0.9rem;
+        }
+        
+        .employee-actions {
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<section class="content">
-  <section class="container-fluid">
-    <section class="row">
-      <section class="col col-lg-12">
-        <span><a href="{{request.META.HTTP_REFERER|escape}}" style="color:#565656;">Retour</a></span>
-      </section>
-    </section>
-
-    {% if messages %}
-      {% for message in messages %}
-        <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>
-          {{ message }}
-          <button type="button" class="close" id="override-start" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+<div class="content">
+    <div class="container-fluid">
+        <!-- En-tête de page -->
+        <div class="page-header">
+            <h1>👥 Gestion des Employés</h1>
+            <p>Consultez et gérez les employés de l'entreprise</p>
         </div>
-      {% endfor %}
-    {% endif %}
 
-    {% for employee in employees %}
-    <section class="row" style="margin-top: 30px;">
-      <section class="text-center col-12">
-        <h3><span class="employee-name-title">{{ employee.get_full_name }}</span></h3>
-      </section>
-
-      <section class="col col-lg-4 col-md-4 col-sm-12 profile-wrapper">
-        {% if employee.image %}
-          <img src="{{ employee.image.url }}" class="img-fluid rounded-circle-image">
-        {% else %}
-          <img src="/media/default.png" class="img-fluid rounded-circle-image" />
-        {% endif %}
-        <section class="text-centered" style="margin-top: 3px;">
-          <ul class="list-group">
-            <li class="list-group-item"><span>Nom</span> <div>{{ employee.get_full_name }}</div></li>
-            {% if employee.email %}
-              <li class="list-group-item"><span>Email</span> <div>{{ employee.email }}</div></li>
-            {% endif %}
-            <li class="list-group-item"><span>Département</span> <div>{{ employee.department }}</div></li>
-            <li class="list-group-item"><span>Type d'employé</span> <div>{{ employee.employeetype }}</div></li>
-            <li class="list-group-item"><span>Fonction</span> <div>{{ employee.role }}</div></li>
-            <li class="list-group-item"><span>Date de naissance</span> <div>{{ employee.birthday }}</div></li>
-            <li class="list-group-item"><span>Âge</span><div>{{ employee.get_age }}</div></li>
-            <li class="list-group-item"><span>Status</span><div>{% if employee.is_blocked %}Inactive{% else %}Active{% endif %}</div></li>
-          </ul>
-          <div>
-            <span style="font-style: italic;">Mis à jour - {{ employee.updated|naturaltime }}</span>
-          </div>
-        </section>
-      </section>
-
-      <section class="col col-lg-8">
-        <div class="panel-group" role="tablist" aria-multiselectable="true">
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab">
-              <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" href="#info{{ employee.id }}" aria-expanded="true">
-                  INFORMATIONS PERSONNEL
+        <!-- Conteneur principal -->
+        <div class="employees-container">
+            <div class="employees-header">
+                <h2 class="employees-title">Liste des Employés</h2>
+                <a href="{% url 'dashboard:employee_create' %}" class="create-btn">
+                    <i class="fa fa-plus"></i>
+                    Nouvel Employé
                 </a>
-              </h4>
             </div>
-            <div id="info{{ employee.id }}" class="panel-collapse collapse in" role="tabpanel">
-              <div class="panel-body">
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col col-lg-6">
-                      {% if employee.firstname %}
-                        <a class="list-group-item list-group-item-action"><span>Prénom</span><div>{{ employee.firstname }}</div></a>
-                      {% endif %}
-                      {% if employee.lastname %}
-                        <a class="list-group-item list-group-item-action"><span>Nom</span><div>{{ employee.lastname }}</div></a>
-                      {% endif %}
-  
-                      {% if employee.email %}
-                        <a class="list-group-item list-group-item-action"><span>Email</span><div>{{ employee.email }}</div></a>
-                      {% endif %}
-                      {% if employee.birthday %}
-                        <a class="list-group-item list-group-item-action"><span>Date de naissance</span><div>{{ employee.birthday }}</div></a>
-                      {% endif %}
-                      {% if employee.id %}
-                        <a class="list-group-item list-group-item-action"><span>Matricule</span><div>{{ employee.id }}</div></a>
-                      {% endif %}
-                      {% if request.user.is_superuser %}
-                        <div>
-                          <span><a href="{% url 'dashboard:editform' employee.id  %}">Modifier</a></span>
-                        </div>
-                      {% endif %}
-                    </div>
 
-                    <div class="col col-lg-6">
-                      {% if employee.startdate %}
-                        <a class="list-group-item list-group-item-action"><span>Date d'embauche</span><div>{{ employee.startdate }}</div></a>
-                      {% endif %}
-                      <div>
-                        <span>Dernière mise à jour - {{ employee.updated|naturaltime }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> <!-- /collapse -->
-          </div> <!-- /panel -->
-        </div> <!-- /panel-group -->
-      </section>
-    </section>
-    {% endfor %}
+            {% if employees %}
+            <div class="table-responsive">
+                <table class="employees-table">
+                    <thead>
+                        <tr>
+                            <th>Nom Complet</th>
+                            <th>Email</th>
+                            <th>Département</th>
+                            <th>Fonction</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for employee in employees %}
+                        <tr>
+                            <td class="employee-name">{{ employee.get_full_name }}</td>
+                            <td>{{ employee.email|default:"Non spécifié" }}</td>
+                            <td class="employee-department">{{ employee.department|default:"Non spécifié" }}</td>
+                            <td>{{ employee.role|default:"Non spécifié" }}</td>
+                            <td>
+                                <span class="status-badge status-{% if employee.is_blocked %}inactive{% else %}active{% endif %}">
+                                    {% if employee.is_blocked %}Inactif{% else %}Actif{% endif %}
+                                </span>
+                            </td>
+                            <td class="employee-actions">
+                                <a href="{% url 'dashboard:employee_detail' employee.id %}" class="action-btn view-btn">
+                                    <i class="fa fa-eye"></i> Voir
+                                </a>
+                                {% if request.user.is_superuser %}
+                                <a href="{% url 'dashboard:editform' employee.id %}" class="action-btn edit-btn">
+                                    <i class="fa fa-edit"></i> Modifier
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fa fa-users"></i>
+                <h3>Aucun employé</h3>
+                <p>Il n'y a pas encore d'employés dans le système.</p>
+                <a href="{% url 'dashboard:employee_create' %}" class="create-btn">
+                    <i class="fa fa-plus"></i>
+                    Créer le premier employé
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-  </section> <!-- /container -->
-</section> <!-- /content -->
+{% block extrajs %}
+<script>
+$(document).ready(function() {
+    // Notification de succès/erreur
+    {% if messages %}
+        {% for message in messages %}
+            $.notify({
+                title: '<strong>{{ message.tags|title }}!</strong>',
+                icon: 'fa fa-{% if message.tags == "success" %}check{% elif message.tags == "error" %}exclamation-triangle{% else %}info{% endif %}',
+                message: "{{ message }}"
+            }, {
+                type: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}danger{% else %}info{% endif %}',
+                timer: 4000
+            });
+        {% endfor %}
+    {% endif %}
+});
+</script>
 {% endblock %}

@@ -1,235 +1,318 @@
 
 {% extends '_layout.html' %}
 
-{% block title %} {{ title }} {% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
- {% block navheader %}
- 	{% include 'includes/navheader_employee_app.html' %}
- {% endblock %}
-
-
-
-   {% block stylesheet %}
-	   	.fa-eye,.fa-pencil{
-	   	    margin-right: 5px;
-	   }
-
-	   .table-shadow{
-	   	background: white;
-    	padding: 2%;
-    	-webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(	0,0,0,0.2);
-    	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
-	}
-	
-
-	h4{
-	margin:2px 0 5px 0 !important;
-	}
-
-
-
-	.table-description{
-		<!-- STYLE WITH GOOGLE FONT -->
-	}
-
-	.download-print-action{
-		padding-bottom: 12px;
-	}
-
-
-    #override-start{
-	    background:none !important;
-	    top: 35% !important;
-	    right:13px;
-	    color:#000;
-	    font-size: 24px;
-
-	}
-
-	.alert-warning{
-	    background:#fd7b7b;
-	}
-
-	.alert-success {
-	    background-color: #82b72a;
-	}
-
-	.alert-success,.alert-warning{
-	    font-size:16px;
-	}
-
-	.sec-box{
-	 width:200px;
-     height:80px;
-     max-width:100%;
-     line-height:80px;
-     text-align:center;
-     position:relative;
-     
-     font-size:1.9rem;
-
-    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
-    transition: all 400ms ease-in;
-
-    font-variant: petite-caps;
-}
-
-
-.sec-box a{
- color:#fff;
- text-decoration:none;
-	
-}
-
-
- .employee-box{
- 	background:#3f9a26;
-}
-
-
- .leave-box{
- 	background:#fff;
-
-}
-
-.leave-box a{
-	color:#3ea7c7 !important;
-}
-
-
- .birthday-box{
- 	background:#8664ad;
-}
-
-.deleted-box{
-	background:#d42828;
-}
-
-.company-box{
-	background:#868686;
-}
-
-.margin-bottom{
-	margin-bottom:1.4rem;
-}
-
-.count-object {
-    position: absolute;
-    top: 31%;
-    right: 12px;
-    font-size: 25px;
-    font-weight: 100;
-    font-variant: petite-caps;
-    color: #f5f5f5;
-    text-shadow:1px 1px rgba(8, 8, 8, 0.23);
-}
-
-.deprt{
-	color:#4195bd !important;
-}
-
-
-#stylebutton{
-	background: #60a0b3 !important;
-    color: #fff !important;
-    font-variant: petite-caps !important;
-    font-size: 14px !important;
-}
-
-.input-group-btn + input:focus{
-	outline:#60a0b3;
-}
-
-
-.total-leaves-count p{
-	font-size: 14px;
-    color: #9d9d9d;
-}
-
-
-
-
-
-
+{% block navheader %}
+    {% include 'includes/navheader_employee_app.html' %}
 {% endblock %}
 
+{% block stylesheet %}
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f5f7fa;
+        color: #2d3436;
+    }
 
-        <!--CONTENTS-->
- {% block content %}
-        <section class="content">
-            <section class="container-fluid">
-            	   <section class="row">
-                        <section class="col col-sm-8 offset-sm-2">
+    .page-header {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
 
-                            {% if  messages %}
-                                    {% for message in messages %}
-                                     <div {% if message.tags %} class="{{ message.tags}}"{% endif %}>
-                                         {{ message }}
-                                         <button type="button" class="close" id = "override-start"data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
-                                         </button>
-                                     </div>
-                                    {% endfor %}
-                            {% endif %}
+    .page-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
 
-                        </section>
-                    </section>
+    .page-header p {
+        font-size: 1.2rem;
+        color: #7f8c8d;
+        margin: 0;
+    }
 
-                	<!-- TABLE -->
-                	<div class="table-responsive table-shadow">
-                		<div class="text-center table-description">
-                			<h4 class="title-h3" style="color: #60a0b3 !important;
-    						text-shadow: 1px 0px rgba(0,0,0,0.11)">Les bénéficiaires </h4>
-                		</div>
-                	
-                		<table class="table">
-							  <thead>
-							    <tr>
-							      <!-- <th scope="col">#</th> -->
-							      <th scope="col">Utilisateur</th>
-							      <th scope="col">nom et prénom</th>
-							      <th scope="col">date de naissance</th>
-						
-								  
-							    </tr>
-							  </thead>
-							  <tbody>
-							  	{% for beneficiaire in beneficiaires %}
-							    <tr>
+    .beneficiaires-container {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+    }
 
-							      <td>{{ beneficiaire.utilisateur }}</td>
-							      <td>{{ beneficiaire.nom_et_prenom}}</td>
-							      <td>{{ beneficiaire.date_naissance }}</td>
-							     
+    .beneficiaires-container:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
 
-							      <td> 
-							      	<a href="{% url 'dashboard:beneficiaires'%}">
-							      	    
-							      	</a>
-				
-							      </td>
-							    </tr>
+    .beneficiaires-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
 
-							    {% endfor %}
+    .beneficiaires-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 0;
+    }
 
-							  </tbody>
+    .create-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-						</table>
-			
-					</div>
-                	<!-- /TABLE -->
+    .create-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        color: white;
+        text-decoration: none;
+    }
 
-            </section> <!-- /container --> 
+    .beneficiaires-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
 
+    .beneficiaires-table th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+    }
 
-        </section>
- {% endblock %}
+    .beneficiaires-table td {
+        padding: 15px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #2d3436;
+    }
 
-<script type="text/javascript">
-{% block extrajs%}
+    .beneficiaires-table tr:hover {
+        background-color: #f8f9fa;
+    }
 
+    .beneficiaire-name {
+        font-weight: 600;
+        color: #2c3e50;
+    }
 
+    .beneficiaire-relation {
+        color: #7f8c8d;
+        font-style: italic;
+    }
+
+    .beneficiaire-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .action-btn {
+        padding: 8px 15px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .view-btn {
+        background: #3498db;
+        color: white;
+    }
+
+    .view-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .edit-btn {
+        background: #f39c12;
+        color: white;
+    }
+
+    .edit-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .delete-btn {
+        background: #e74c3c;
+        color: white;
+    }
+
+    .delete-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #7f8c8d;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #bdc3c7;
+        margin-bottom: 20px;
+    }
+
+    .empty-state h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: #2c3e50;
+    }
+
+    .empty-state p {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+        .beneficiaires-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .beneficiaires-table {
+            font-size: 0.9rem;
+        }
+        
+        .beneficiaire-actions {
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+    }
+</style>
 {% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <!-- En-tête de page -->
+        <div class="page-header">
+            <h1>👨‍👩‍👧‍👦 Gestion des Bénéficiaires</h1>
+            <p>Consultez et gérez les bénéficiaires des employés</p>
+        </div>
+
+        <!-- Conteneur principal -->
+        <div class="beneficiaires-container">
+            <div class="beneficiaires-header">
+                <h2 class="beneficiaires-title">Liste des Bénéficiaires</h2>
+                <a href="{% url 'dashboard:beneficiairecreate' %}" class="create-btn">
+                    <i class="fa fa-plus"></i>
+                    Nouveau Bénéficiaire
+                </a>
+            </div>
+
+            {% if beneficiaires %}
+            <div class="table-responsive">
+                <table class="beneficiaires-table">
+                    <thead>
+                        <tr>
+                            <th>Nom Complet</th>
+                            <th>Employé</th>
+                            <th>Relation</th>
+                            <th>Date de Naissance</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for beneficiaire in beneficiaires %}
+                        <tr>
+                            <td class="beneficiaire-name">{{ beneficiaire.firstname }} {{ beneficiaire.lastname }}</td>
+                            <td>{{ beneficiaire.employee.get_full_name }}</td>
+                            <td class="beneficiaire-relation">{{ beneficiaire.relation }}</td>
+                            <td>{{ beneficiaire.birthday|date:"d/m/Y"|default:"Non spécifié" }}</td>
+                            <td class="beneficiaire-actions">
+                                <a href="{% url 'dashboard:beneficiaire_detail' beneficiaire.id %}" class="action-btn view-btn">
+                                    <i class="fa fa-eye"></i> Voir
+                                </a>
+                                <a href="{% url 'dashboard:beneficiaire_edit' beneficiaire.id %}" class="action-btn edit-btn">
+                                    <i class="fa fa-edit"></i> Modifier
+                                </a>
+                                <a href="{% url 'dashboard:beneficiaire_delete' beneficiaire.id %}" 
+                                   class="action-btn delete-btn"
+                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer le bénéficiaire \"{{ beneficiaire.firstname }} {{ beneficiaire.lastname }}\" ?')">
+                                    <i class="fa fa-trash"></i> Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fa fa-users"></i>
+                <h3>Aucun bénéficiaire</h3>
+                <p>Il n'y a pas encore de bénéficiaires dans le système.</p>
+                <a href="{% url 'dashboard:beneficiairecreate' %}" class="create-btn">
+                    <i class="fa fa-plus"></i>
+                    Créer le premier bénéficiaire
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+<script>
+$(document).ready(function() {
+    // Notification de succès/erreur
+    {% if messages %}
+        {% for message in messages %}
+            $.notify({
+                title: '<strong>{{ message.tags|title }}!</strong>',
+                icon: 'fa fa-{% if message.tags == "success" %}check{% elif message.tags == "error" %}exclamation-triangle{% else %}info{% endif %}',
+                message: "{{ message }}"
+            }, {
+                type: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}danger{% else %}info{% endif %}',
+                timer: 4000
+            });
+        {% endfor %}
+    {% endif %}
+});
 </script>
-
-<!-- pe-7s-back   <= -->
+{% endblock %}

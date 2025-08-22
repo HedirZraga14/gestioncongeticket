@@ -173,7 +173,7 @@
                 			<h4 class="title-h3" style="color: #60a0b3 !important;
     						text-shadow: 1px 0px rgba(0,0,0,0.11)">{{ employee.get_full_name }}</h4>
                 		</div>
-                		{% if leave_list %}
+                		{% if leaves %}
                 		<table class="table">
 							  <thead>
 							    <tr>
@@ -184,7 +184,7 @@
 							    </tr>
 							  </thead>
 							  <tbody>
-							  	{% for leave in leave_list %}
+							  	{% for leave in leaves %}
 							    <tr>
 
 							      <td>{{ leave.leavetype}}</td>
@@ -192,7 +192,7 @@
 							      {% if leave.is_approved %}
 							      <td style="color:green;font-weight: bold">{{ leave.status }}</td>
 							      {% else %}
-							      <td style="color:">{{ leave.status }}</td>
+							      <td style="color:red">{{ leave.status }}</td>
 							      {% endif %}
 
 							      <td> 
@@ -222,9 +222,8 @@
         </section>
  {% endblock %}
 
+{% block extrajs %}
 <script type="text/javascript">
-{% block extrajs%}
-
-
-{% endblock %}
+// Script JavaScript pour les fonctionnalités de la page
 </script>
+{% endblock %}

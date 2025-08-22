@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rapport Mensuel - {{ report_data.month }}/{{ report_data.year }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin: 25px 0;
+            page-break-inside: avoid;
+        }
+        .section h2 {
+            color: #667eea;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        .stat-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+        .ai-section {
+            background-color: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Rapport Mensuel</h1>
+        <h2>{{ report_data.month }}/{{ report_data.year }}</h2>
+        <p>Période: {{ report_data.start_date|date:"d/m/Y" }} - {{ report_data.end_date|date:"d/m/Y" }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Vue d'ensemble</h2>
+        <div style="display: flex; justify-content: space-between;">
+            <div class="stat-box" style="flex: 1; margin-right: 10px;">
+                <div class="stat-value">{{ report_data.total_leaves }}</div>
+                <div class="stat-label">Total Congés</div>
+            </div>
+            <div class="stat-box" style="flex: 1; margin-left: 10px;">
+                <div class="stat-value">{{ report_data.total_tickets }}</div>
+                <div class="stat-label">Total Tickets</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Congés par Statut</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Statut</th>
+                    <th>Nombre</th>
+                    <th>Pourcentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in report_data.leaves_by_status %}
+                <tr>
+                    <td>{{ item.status|title }}</td>
+                    <td>{{ item.count }}</td>
+                    <td>{% widthratio item.count report_data.total_leaves 100 %}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Congés par Type</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Type de Congé</th>
+                    <th>Nombre</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in report_data.leaves_by_type %}
+                <tr>
+                    <td>{{ item.leavetype|title }}</td>
+                    <td>{{ item.count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Tickets par Statut</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Statut</th>
+                    <th>Nombre</th>
+                    <th>Pourcentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in report_data.tickets_by_status %}
+                <tr>
+                    <td>{{ item.statut }}</td>
+                    <td>{{ item.count }}</td>
+                    <td>{% widthratio item.count report_data.total_tickets 100 %}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Destinations les Plus Demandées</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Destination</th>
+                    <th>Nombre de Demandes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in report_data.tickets_by_destination %}
+                <tr>
+                    <td>{{ item.destination }}</td>
+                    <td>{{ item.count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="ai-section">
+        <h2>Analytics IA</h2>
+        <div style="display: flex; justify-content: space-between;">
+            <div class="stat-box" style="flex: 1; margin-right: 10px;">
+                <div class="stat-value">{{ report_data.ai_statistics.avg_approval_probability }}%</div>
+                <div class="stat-label">Probabilité Moyenne d'Approbation</div>
+            </div>
+        </div>
+        
+        {% if report_data.ai_statistics.priority_distribution %}
+        <h3>Distribution des Priorités IA</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Priorité</th>
+                    <th>Nombre</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for priority, count in report_data.ai_statistics.priority_distribution.items %}
+                <tr>
+                    <td>{{ priority|title }}</td>
+                    <td>{{ count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+        
+        {% if report_data.ai_statistics.sentiment_distribution %}
+        <h3>Distribution des Sentiments IA</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sentiment</th>
+                    <th>Nombre</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sentiment, count in report_data.ai_statistics.sentiment_distribution.items %}
+                <tr>
+                    <td>{{ sentiment|title }}</td>
+                    <td>{{ count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        <p>Rapport généré automatiquement le {{ report_data.end_date|date:"d/m/Y à H:i" }}</p>
+        <p>Système de Gestion des Congés et Tickets - TUNISAIR Express</p>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rapport Analytics - {{ report_data.period }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin: 25px 0;
+            page-break-inside: avoid;
+        }
+        .section h2 {
+            color: #667eea;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        .trend-chart {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .trend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .trend-item:last-child {
+            border-bottom: none;
+        }
+        .trend-month {
+            font-weight: bold;
+            color: #667eea;
+        }
+        .trend-count {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .insights-section {
+            background-color: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .insight-item {
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Rapport Analytics</h1>
+        <h2>Période: {{ report_data.period }}</h2>
+        <p>Analyse des tendances et insights IA</p>
+    </div>
+
+    <div class="section">
+        <h2>Évolution Mensuelle des Congés</h2>
+        <div class="trend-chart">
+            {% for item in report_data.monthly_leaves %}
+            <div class="trend-item">
+                <span class="trend-month">{{ item.month }}</span>
+                <span class="trend-count">{{ item.count }} congés</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Évolution Mensuelle des Tickets</h2>
+        <div class="trend-chart">
+            {% for item in report_data.monthly_tickets %}
+            <div class="trend-item">
+                <span class="trend-month">{{ item.month }}</span>
+                <span class="trend-count">{{ item.count }} tickets</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Comparaison Congés vs Tickets</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Mois</th>
+                    <th>Congés</th>
+                    <th>Tickets</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave_item in report_data.monthly_leaves %}
+                {% for ticket_item in report_data.monthly_tickets %}
+                {% if leave_item.month == ticket_item.month %}
+                <tr>
+                    <td>{{ leave_item.month }}</td>
+                    <td>{{ leave_item.count }}</td>
+                    <td>{{ ticket_item.count }}</td>
+                    <td><strong>{{ leave_item.count|add:ticket_item.count }}</strong></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if report_data.insights %}
+    <div class="insights-section">
+        <h2>Insights IA</h2>
+        {% for insight in report_data.insights %}
+        <div class="insight-item">
+            <p>{{ insight }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="section">
+        <h2>Analyse des Tendances</h2>
+        <div style="display: flex; justify-content: space-between;">
+            <div style="flex: 1; margin-right: 10px;">
+                <h3>Congés</h3>
+                <ul>
+                    {% for item in report_data.monthly_leaves %}
+                    <li>{{ item.month }}: {{ item.count }} demandes</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div style="flex: 1; margin-left: 10px;">
+                <h3>Tickets</h3>
+                <ul>
+                    {% for item in report_data.monthly_tickets %}
+                    <li>{{ item.month }}: {{ item.count }} demandes</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Rapport analytics généré automatiquement le {{ report_data.period|slice:"-10:" }}</p>
+        <p>Système de Gestion des Congés et Tickets - TUNISAIR Express</p>
+        <p>Analytics IA activés</p>
+    </div>
+</body>
+</html> 

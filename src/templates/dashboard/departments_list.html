@@ -1,0 +1,324 @@
+{% extends '_layout.html' %}
+
+{% block title %}Gestion des Départements{% endblock %}
+
+{% block navheader %}
+    {% include 'includes/navheader_employee_app.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f5f7fa;
+        color: #2d3436;
+    }
+
+    .page-header {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    .page-header p {
+        font-size: 1.2rem;
+        color: #7f8c8d;
+        margin: 0;
+    }
+
+    .departments-container {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .departments-container:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .departments-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .departments-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 0;
+    }
+
+    .create-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .create-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .departments-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .departments-table th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+    }
+
+    .departments-table td {
+        padding: 15px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #2d3436;
+    }
+
+    .departments-table tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .department-name {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .department-service {
+        color: #7f8c8d;
+        font-style: italic;
+    }
+
+    .department-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .action-btn {
+        padding: 8px 15px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .edit-btn {
+        background: #3498db;
+        color: white;
+    }
+
+    .edit-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .delete-btn {
+        background: #e74c3c;
+        color: white;
+    }
+
+    .delete-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #7f8c8d;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #bdc3c7;
+        margin-bottom: 20px;
+    }
+
+    .empty-state h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: #2c3e50;
+    }
+
+    .empty-state p {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+
+    .badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .badge-info {
+        background: #3498db;
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .departments-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .departments-table {
+            font-size: 0.9rem;
+        }
+        
+        .department-actions {
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <!-- En-tête de page -->
+        <div class="page-header">
+            <h1>🏢 Gestion des Départements</h1>
+            <p>Administration des départements de l'entreprise</p>
+        </div>
+
+        <!-- Conteneur principal -->
+        <div class="departments-container">
+            <div class="departments-header">
+                <h2 class="departments-title">Liste des Départements</h2>
+                <a href="{% url 'dashboard:department_create' %}" class="create-btn">
+                    <i class="fa fa-plus"></i>
+                    Nouveau Département
+                </a>
+            </div>
+
+            {% if departments %}
+            <div class="table-responsive">
+                <table class="departments-table">
+                    <thead>
+                        <tr>
+                            <th>Nom du Département</th>
+                            <th>Service</th>
+                            <th>Employés</th>
+                            <th>Date de Création</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for department in departments %}
+                        <tr>
+                            <td class="department-name">{{ department.name }}</td>
+                            <td class="department-service">
+                                {% if department.service %}
+                                    {{ department.service }}
+                                {% else %}
+                                    <span style="color: #bdc3c7; font-style: italic;">Non spécifié</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% with employee_count=department.employee_set.count %}
+                                    <span class="badge badge-info">{{ employee_count }} employé{{ employee_count|pluralize }}</span>
+                                {% endwith %}
+                            </td>
+                            <td>{{ department.created|date:"d/m/Y" }}</td>
+                            <td class="department-actions">
+                                <a href="{% url 'dashboard:department_edit' department.id %}" class="action-btn edit-btn">
+                                    <i class="fa fa-edit"></i> Modifier
+                                </a>
+                                <a href="{% url 'dashboard:department_delete' department.id %}" 
+                                   class="action-btn delete-btn"
+                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer le département \"{{ department.name }}\" ?')">
+                                    <i class="fa fa-trash"></i> Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fa fa-building"></i>
+                <h3>Aucun département</h3>
+                <p>Il n'y a pas encore de départements créés dans le système.</p>
+                <a href="{% url 'dashboard:department_create' %}" class="create-btn">
+                    <i class="fa fa-plus"></i>
+                    Créer le premier département
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+<script>
+$(document).ready(function() {
+    // Notification de succès/erreur
+    {% if messages %}
+        {% for message in messages %}
+            $.notify({
+                title: '<strong>{{ message.tags|title }}!</strong>',
+                icon: 'fa fa-{% if message.tags == "success" %}check{% elif message.tags == "error" %}exclamation-triangle{% else %}info{% endif %}',
+                message: "{{ message }}"
+            }, {
+                type: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}danger{% else %}info{% endif %}',
+                timer: 4000
+            });
+        {% endfor %}
+    {% endif %}
+});
+</script>
+{% endblock %} 

@@ -73,7 +73,7 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user and user.is_active:
                 login(request, user)
-                return redirect('dashboard:dashboard')
+                return redirect('dashboard:custom_login_redirect')
             else:
                 messages.error(request, 'compte est invalide', extra_tags='alert alert-error alert-dismissible show')
                 return redirect('accounts:login')

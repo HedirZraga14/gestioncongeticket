@@ -30,11 +30,18 @@ class Leave(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     startdate = models.DateField(verbose_name=_('Date début'), help_text='Votre congé du ..', null=True, blank=False)
     enddate = models.DateField(verbose_name=_(' Date fin '), help_text='et fini à...', null=True, blank=False)
-    leavetype = models.CharField(verbose_name=_(' type congé '), choices=LEAVE_TYPE, max_length=25, default='Congé annuel', null=True, blank=False)
+    leavetype = models.CharField(verbose_name=_(' type congé '), choices=LEAVE_TYPE, max_length=25, default=Conge, null=True, blank=False)
     status = models.CharField(max_length=12, default='pending')  # pending, approved, rejected, cancelled
     is_approved = models.BooleanField(default=False)  # hide
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     created = models.DateTimeField(auto_now=False, auto_now_add=True)
+    
+    # Champs AI pour l'analyse automatique
+    ai_approval_probability = models.FloatField(default=0.0, verbose_name=_('Probabilité d\'approbation IA'))
+    ai_approval_factors = models.TextField(blank=True, null=True, verbose_name=_('Facteurs d\'approbation IA'))
+    ai_priority = models.CharField(max_length=20, blank=True, null=True, verbose_name=_('Priorité IA'))
+    ai_priority_score = models.FloatField(default=0.0, verbose_name=_('Score de priorité IA'))
+    ai_analysis_date = models.DateTimeField(null=True, blank=True, verbose_name=_('Date d\'analyse IA'))
 
     objects = LeaveManager()
 
@@ -68,7 +75,6 @@ class Leave(models.Model):
 
     @property
     def leave_days(self):
-        days_count = ''
         startdate = self.startdate
         enddate = self.enddate
         if startdate > enddate:
@@ -111,3 +117,14 @@ class Leave(models.Model):
     @property
     def is_rejected(self):
         return self.status == 'rejected'
+    
+    def get_ai_analysis_data(self):
+        """Retourne les données pour l'analyse IA"""
+        employee = self.user.employee_set.first()
+        return {
+            'employee_type': employee.employeetype if employee else None,
+            'leave_type': self.leavetype,
+            'leave_days': self.leave_days,
+            'start_date': self.startdate,
+            'user_role': 'admin' if self.user.is_superuser else 'employee'
+        }

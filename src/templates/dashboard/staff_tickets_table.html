@@ -1,5 +1,5 @@
 {% extends '_layout.html' %}
-{% load static %}
+
 {% block title %}Liste des tickets{% endblock %}
 
 {% block navheader %}
@@ -8,186 +8,323 @@
 
 {% block stylesheet %}
 <style>
-.fa-eye, .fa-pencil {
-    margin-right: 5px;
-}
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f5f7fa;
+        color: #2d3436;
+    }
 
-.table-shadow {
-    background: white;
-    padding: 2%;
-    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-}
+    .page-header {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
 
-h4 {
-    margin: 2px 0 5px 0 !important;
-}
+    .page-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
 
-.table-description {
-    /* STYLE WITH GOOGLE FONT */
-}
+    .page-header p {
+        font-size: 1.2rem;
+        color: #7f8c8d;
+        margin: 0;
+    }
 
-.download-print-action {
-    padding-bottom: 12px;
-}
+    .tickets-container {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+    }
 
-#override-start {
-    background: none !important;
-    top: 35% !important;
-    right: 13px;
-    color: #000;
-    font-size: 24px;
-}
+    .tickets-container:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
 
-.alert-warning {
-    background: #fd7b7b;
-}
+    .tickets-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
 
-.alert-success {
-    background-color: #82b72a;
-}
+    .tickets-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 0;
+    }
 
-.alert-success,
-.alert-warning {
-    font-size: 16px;
-}
+    .create-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-.sec-box {
-    width: 200px;
-    height: 80px;
-    max-width: 100%;
-    line-height: 80px;
-    text-align: center;
-    position: relative;
-    font-size: 1.9rem;
-    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-    transition: all 400ms ease-in;
-    font-variant: petite-caps;
-}
+    .create-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        color: white;
+        text-decoration: none;
+    }
 
-.sec-box a {
-    color: #fff;
-    text-decoration: none;
-}
+    .tickets-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
 
-.employee-box {
-    background: #3f9a26;
-}
+    .tickets-table th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+    }
 
-.leave-box {
-    background: #fff;
-}
+    .tickets-table td {
+        padding: 15px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #2d3436;
+    }
 
-.leave-box a {
-    color: #3ea7c7 !important;
-}
+    .tickets-table tr:hover {
+        background-color: #f8f9fa;
+    }
 
-.birthday-box {
-    background: #8664ad;
-}
+    .ticket-employee {
+        font-weight: 600;
+        color: #2c3e50;
+    }
 
-.deleted-box {
-    background: #d42828;
-}
+    .ticket-destination {
+        color: #7f8c8d;
+        font-style: italic;
+    }
 
-.company-box {
-    background: #868686;
-}
+    .ticket-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
 
-.margin-bottom {
-    margin-bottom: 1.4rem;
-}
+    .action-btn {
+        padding: 8px 15px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
 
-.count-object {
-    position: absolute;
-    top: 31%;
-    right: 12px;
-    font-size: 25px;
-    font-weight: 100;
-    font-variant: petite-caps;
-    color: #f5f5f5;
-    text-shadow: 1px 1px rgba(8, 8, 8, 0.23);
-}
+    .view-btn {
+        background: #3498db;
+        color: white;
+    }
 
-.deprt {
-    color: #4195bd !important;
-}
+    .view-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        color: white;
+        text-decoration: none;
+    }
 
-#stylebutton {
-    background: #60a0b3 !important;
-    color: #fff !important;
-    font-variant: petite-caps !important;
-    font-size: 14px !important;
-}
+    .edit-btn {
+        background: #f39c12;
+        color: white;
+    }
 
-.input-group-btn+input:focus {
-    outline: #60a0b3;
-}
+    .edit-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .status-badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .status-pending {
+        background: #f39c12;
+        color: white;
+    }
+
+    .status-approved {
+        background: #27ae60;
+        color: white;
+    }
+
+    .status-rejected {
+        background: #e74c3c;
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #7f8c8d;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #bdc3c7;
+        margin-bottom: 20px;
+    }
+
+    .empty-state h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: #2c3e50;
+    }
+
+    .empty-state p {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+        .tickets-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .tickets-table {
+            font-size: 0.9rem;
+        }
+        
+        .ticket-actions {
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<section class="content">
-    <section class="container-fluid">
-        <section class="row">
-            <section class="col col-sm-8 offset-sm-2">
-                {% if messages %}
-                    {% for message in messages %}
-                        <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                            {{ message }}
-                            <button type="button" class="close" id="override-start" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            </section>
-        </section>
+<div class="content">
+    <div class="container-fluid">
+        <!-- En-tête de page -->
+        <div class="page-header">
+            <h1>✈️ Gestion des Billets</h1>
+            <p>Consultez et gérez les demandes de billets d'avion</p>
+        </div>
 
-        <!-- TABLE -->
-        <div class="table-responsive table-shadow">
-            <div class="text-center table-description">
-                <h4 style="color: #60a0b3 !important; text-shadow: 1px 0px rgba(0, 0, 0, 0.11)">{{ employee.get_full_name }}</h4>
+        <!-- Conteneur principal -->
+        <div class="tickets-container">
+            <div class="tickets-header">
+                <h2 class="tickets-title">Liste des Billets</h2>
+                <a href="{% url 'dashboard:createticket' %}" class="create-btn">
+                    <i class="fa fa-plus"></i>
+                    Nouveau Billet
+                </a>
             </div>
-            {% if ticket_list %}
-            <table class="table">
-                <thead>
-                    <tr>
-                        
-                        <th scope="col">Destination</th>
-                        <th scope="col">compagnie</th>
-                        <th scope="col">Bénéficiaires</th>
-                        <th scope="col">Statut</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for ticket in ticket_list %}
+
+            {% if tickets %}
+            <div class="table-responsive">
+                <table class="tickets-table">
+                    <thead>
                         <tr>
-                           
-                            <td>{{ ticket.destination }}</td>
-                            <td>{{ ticket.compagnie }}</td>
-                            <td>{{ ticket.beneficiaires }}</td>
-                           
-                            {% if ticket.is_approved %}
-                            <td style="color:green;font-weight: bold">{{ ticket.statut }}</td>
-                            {% else %}
-                            <td style="color:">{{ ticket.statut }}</td>
-                            {% endif %}
-                            <td> 
-                                <a href="{% url 'dashboard:user_ticket_view' ticket.id %}">
-                                    Consulter
+                            <th>Employé</th>
+                            <th>Destination</th>
+                            <th>Date de Demande</th>
+                            <th>Date de Retour</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ticket in tickets %}
+                        <tr>
+                            <td class="ticket-employee">{{ ticket.user.first_name }} {{ ticket.user.last_name }}</td>
+                            <td class="ticket-destination">{{ ticket.destination }}</td>
+                            <td>{{ ticket.date|date:"d/m/Y" }}</td>
+                            <td>-</td>
+                            <td>
+                                <span class="status-badge status-{{ ticket.statut|lower }}">
+                                    {{ ticket.statut }}
+                                </span>
+                            </td>
+                            <td class="ticket-actions">
+                                <a href="{% url 'dashboard:user_ticket_view' ticket.id %}" class="action-btn view-btn">
+                                    <i class="fa fa-eye"></i> Voir
                                 </a>
+                                {% if ticket.statut == 'En attente' %}
+                                <a href="#" class="action-btn edit-btn">
+                                    <i class="fa fa-edit"></i> Modifier
+                                </a>
+                                {% endif %}
                             </td>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             {% else %}
-            <span>Aucun billet n'a été trouvé...</span>
+            <div class="empty-state">
+                <i class="fa fa-plane"></i>
+                <h3>Aucun billet</h3>
+                <p>Il n'y a pas encore de demandes de billets dans le système.</p>
+                <a href="{% url 'dashboard:createticket' %}" class="create-btn">
+                    <i class="fa fa-plus"></i>
+                    Créer la première demande
+                </a>
+            </div>
             {% endif %}
         </div>
-        <!-- /TABLE -->
-    </section> <!-- /container --> 
-</section>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+<script>
+$(document).ready(function() {
+    // Notification de succès/erreur
+    {% if messages %}
+        {% for message in messages %}
+            $.notify({
+                title: '<strong>{{ message.tags|title }}!</strong>',
+                icon: 'fa fa-{% if message.tags == "success" %}check{% elif message.tags == "error" %}exclamation-triangle{% else %}info{% endif %}',
+                message: "{{ message }}"
+            }, {
+                type: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}danger{% else %}info{% endif %}',
+                timer: 4000
+            });
+        {% endfor %}
+    {% endif %}
+});
+</script>
 {% endblock %}

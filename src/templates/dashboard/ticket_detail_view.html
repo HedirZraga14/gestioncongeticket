@@ -158,6 +158,58 @@ color:#e6e4e4;
                             <div>{{ ticket.get_statut_display }}</div>
                         </a>
                     </div>
+                    
+                    {% if ai_data %}
+                    <!-- Section Analyse IA -->
+                    <div class="card mt-3">
+                        <div class="card-header bg-info text-white">
+                            <h5><i class="fas fa-robot"></i> Analyse IA</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span><strong>Priorité IA:</strong></span>
+                                        <span class="badge badge-{{ ai_data.priority_color }}">{{ ticket.ai_priority|default:"Non analysé" }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span><strong>Score de priorité:</strong></span>
+                                        <span class="badge badge-secondary">{{ ai_data.priority_percentage }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span><strong>Sentiment:</strong></span>
+                                        <span class="badge badge-info">{{ ai_data.sentiment_icon }} {{ ticket.ai_sentiment|default:"Non analysé" }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span><strong>Score sentiment:</strong></span>
+                                        <span class="badge badge-secondary">{{ ai_data.sentiment_percentage }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span><strong>Catégorie IA:</strong></span>
+                                        <span class="badge badge-success">{{ ticket.ai_category|default:"Non analysé" }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span><strong>Confiance catégorie:</strong></span>
+                                        <span class="badge badge-secondary">{{ ai_data.category_confidence }}</span>
+                                    </div>
+                                    {% if ticket.ai_priority_reason %}
+                                    <div class="mb-2">
+                                        <strong>Raison de la priorité:</strong>
+                                        <small class="text-muted d-block">{{ ticket.ai_priority_reason }}</small>
+                                    </div>
+                                    {% endif %}
+                                    <div class="mb-2">
+                                        <strong>Date d'analyse:</strong>
+                                        <small class="text-muted d-block">{{ ticket.ai_analysis_date|date:"d/m/Y H:i" }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
                     <div>
                         
                    <a href="{% url 'dashboard:print_ticket'  ticket_id=ticket.id  %}?template_path=ticket_template.html&content=imprimer" class="btn btn-primary">Imprimer</a>

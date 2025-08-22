@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from employee.models import Employee
 from ticket.manager import ticketManager
 from datetime import datetime
+from django.utils import timezone
 
 
 
@@ -43,6 +44,22 @@ class Ticket(models.Model):
     statut = models.CharField(choices=STATUT_CHOICES, max_length=20, default=attente, verbose_name=_('En attente'))
     is_approved = models.BooleanField(default=False, verbose_name=_('Est approuvé'))  
     created_at = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    
+    # Champs pour le temps de réponse
+    response_time_hours = models.FloatField(null=True, blank=True, verbose_name=_('Temps de réponse (heures)'))
+    response_time_days = models.FloatField(null=True, blank=True, verbose_name=_('Temps de réponse (jours)'))
+    responded_at = models.DateTimeField(null=True, blank=True, verbose_name=_('Date de réponse'))
+    
+    # Champs AI pour l'analyse automatique
+    ai_priority = models.CharField(max_length=20, blank=True, null=True, verbose_name=_('Priorité IA'))
+    ai_priority_score = models.FloatField(default=0.0, verbose_name=_('Score de priorité IA'))
+    ai_priority_reason = models.TextField(blank=True, null=True, verbose_name=_('Raison de la priorité IA'))
+    ai_category = models.CharField(max_length=50, blank=True, null=True, verbose_name=_('Catégorie IA'))
+    ai_category_confidence = models.FloatField(default=0.0, verbose_name=_('Confiance catégorie IA'))
+    ai_sentiment = models.CharField(max_length=20, blank=True, null=True, verbose_name=_('Sentiment IA'))
+    ai_sentiment_score = models.FloatField(default=0.0, verbose_name=_('Score sentiment IA'))
+    ai_analysis_date = models.DateTimeField(null=True, blank=True, verbose_name=_('Date d\'analyse IA'))
     
 
      
@@ -73,14 +90,18 @@ class Ticket(models.Model):
         if not self.is_approved:
             self.is_approved = True
             self.statut = 'accepte'
+            self.responded_at = timezone.now()
+            self._calculate_response_time()
             self.save()
-
 
     @property
     def unapprove_ticket(self):
         if self.is_approved:
             self.is_approved = False
             self.statut = 'attente'
+            self.responded_at = None
+            self.response_time_hours = None
+            self.response_time_days = None
             self.save()
 
     @property
@@ -88,7 +109,16 @@ class Ticket(models.Model):
         if self.is_approved or not self.is_approved:
             self.is_approved = False
             self.statut = 'refuse'
+            self.responded_at = timezone.now()
+            self._calculate_response_time()
             self.save()
+
+    def _calculate_response_time(self):
+        """Calcule le temps de réponse en heures et jours"""
+        if self.responded_at and self.created_at:
+            time_diff = self.responded_at - self.created_at
+            self.response_time_hours = time_diff.total_seconds() / 3600
+            self.response_time_days = self.response_time_hours / 24
 
     @property
     def is_rejected(self):
@@ -112,5 +142,18 @@ class Ticket(models.Model):
     def unapprove_retired(self):
         if self.is_retired:
             self.is_retired = False
-            self.save()    
+            self.save()
+    
+    def get_ai_analysis_text(self):
+        """Retourne le texte à analyser par l'IA"""
+        text_parts = []
+        if self.destination:
+            text_parts.append(f"Destination: {self.destination}")
+        if self.compagnie:
+            text_parts.append(f"Compagnie: {self.compagnie}")
+        if self.retraité:
+            text_parts.append("Demandeur retraité")
+        if self.vous:
+            text_parts.append("Bénéficiaire: demandeur lui-même")
+        return " ".join(text_parts)
   

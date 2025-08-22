@@ -1,311 +1,563 @@
-
 {% extends '_layout.html' %}
 
-{% block title %} {{ title }} {% endblock %}
+{% block title %}Analytics Avancé - Dashboard{% endblock %}
 
-  {% block stylesheet %}
-     .sec-box{
-     <!-- width:400px; --><!-- dont uncomment this code - line -->
-     height:90px;
-     max-width:100%;
-     line-height:90px;
-     text-align:center;
-     position:relative;
-     
-     font-size:1.9rem;
-
-    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
-    transition: all 400ms ease-in;
-
-    font-variant: petite-caps;
- }
-
-.sec-box a{
- color:#fff;
- text-decoration:none;
-	
+{% block stylesheet %}
+<style>
+.kpi-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    padding: 25px;
+    color: white;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
 }
 
-
- .employee-box{
- 	background:#00008B;
+.kpi-card:hover {
+    transform: translateY(-5px);
 }
 
-.beneficiaire-box{
-    background:#00008B;
-
+.kpi-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    opacity: 0.9;
 }
 
- .leave-box{
- 	background:#00008B;
-
+.kpi-card .kpi-value {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
-.ticket-box{
-    background:#00008B;
+.kpi-card .kpi-change {
+    font-size: 1.1rem;
+    opacity: 0.8;
+}
 
+.chart-container {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+}
+
+.chart-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.analytics-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.analytics-header h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.analytics-header p {
+    font-size: 1.3rem;
+    opacity: 0.9;
+}
+
+.trend-indicator {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.trend-up {
+    background: rgba(72, 187, 120, 0.2);
+    color: #48bb78;
+}
+
+.trend-down {
+    background: rgba(245, 101, 101, 0.2);
+    color: #f56565;
+}
+
+.trend-neutral {
+    background: rgba(160, 174, 192, 0.2);
+    color: #a0aec0;
 }
 
 .card {
-  background-color: transparent !important;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
 }
 
-
-
-
-
-.count-object {
-    position: absolute;
-    top: 40%;
-    right: 12px;
-    font-size: 29px;
-    font-weight: 100;
-    font-variant: petite-caps;
-    color: #f5f5f5;
-    text-shadow:1px 1px rgba(8, 8, 8, 0.23);
+.card-body {
+    padding: 25px;
 }
-.sec-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    height: 100%;
-    padding: 20px;
-    text-align: center;
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .sec-box:hover {
-    transform: translateY(-5px);
-  }
-  
-  .sec-box a {
-    color: #333;
-    text-decoration: none;
-    font-size: 2 rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    transition: color 0.3s ease-in-out;
-  }
-  
-  .sec-box a:hover {
-    color: #41b6d6;
-  }
-  
-  .sec-box .count-object {
-    display: block;
-    font-size: 3rem;
-    line-height: 1;
-    color: #41b6d6;
-    margin-top: 10px;
-  }
-  
-  .employee-box {
-    background-color: #f0f0f0;
-  }
-  
-  .beneficiaire-box {
-    background-color: #d9edf7;
-  }
-  
-  .leave-box {
-    background-color: #f7f7f7;
-  }
-  
-  .ticket-box {
-    background-color: #f0f0f0;
-  }
 
+.card-title {
+    color: #2d3748;
+    font-weight: 600;
+    font-size: 1.4rem;
+}
+</style>
 {% endblock %}
 
-  
-
- <!--CONTENTS-->
 {% block content %}
- <section class="content">
-    <section class="container-fluid">
-        <section class="row justify-content-center">
-            <section class="col-12 text-center mb-4">
-              <h2 style="color: rgba(22, 22, 99, 0.903);">Dashboard</h2>
-            </section>
-            {% if request.user.is_superuser and request.user.is_staff %}
-             <section class="row justify-content-center">
-              <section class="col-lg-3 mb-3">
-                <div class="employee-box sec-box">
-                  <a href="">
-                    <i class="pe-7s-user"></i>
-                    <span>Employées </span>
-                  </a>
-                  <span class="count-object">{{ employees.count }}</span>
-                </div>
-              </section>
+<section class="content">
+    <div class="container-fluid">
+        <!-- Header Analytics -->
+        <div class="analytics-header">
+            <h1>📊 Analytics Avancé</h1>
+            <p>Tableau de bord décisionnel - KPI RH et Support</p>
             
-              <section class="col-lg-3 mb-3">
-                <div class="beneficiaire-box sec-box">
-                  <a href="">
-                    <i class="pe-7s-users"></i>
-                    <span>Bénéficiaires </span>
-                  </a>
-                  <span class="count-object">{{ beneficiaires.count }}</span>
-                </div>
-              </section>
-              {% endif %}
-              <section class="col-lg-3 mb-3">
-                <div class="leave-box sec-box">
-                  <a href="">
-                    <i class="pe-7s-note2"></i>
-                    <span>Congés </span>
-                  </a>
-                  <span class="count-object">{{ leaves.count }}</span>
-                </div>
-              </section>
-              <section class="col-lg-3 mb-3">
-                <div class="ticket-box sec-box">
-                  <a href="">
-                    <i class="pe-7s-ticket"></i>
-                    <span>Tickets </span>
-                  </a>
-                  <span class="count-object">{{ tickets.count }}</span>
-                </div>
-              </section>
-            </section>
-          </section>
-       
-        <section class="row mt-2">
-          <section class="col-md-6">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="card-title text-center">Répartition par statut de congés</h4>
-                <canvas id="leaveChart" style="height: 250px; max-height: 250px;"></canvas>
-              </div>
+            <!-- Boutons d'export -->
+            <div class="export-buttons mt-3">
+                <a href="{% url 'dashboard:export_analytics_excel' %}" class="btn btn-success me-2">
+                    <i class="fas fa-file-excel"></i> Export Excel Analytics
+                </a>
+                <a href="{% url 'dashboard:export_analytics_pdf' %}" class="btn btn-danger">
+                    <i class="fas fa-file-pdf"></i> Export PDF Analytics
+                </a>
             </div>
-          </section>
-          <section class="col-md-6">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="card-title text-center">Distribution des destinations</h4>
-                <canvas id="ticketChart" style="height: 250px; max-height: 250px;"></canvas>
-              </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="metric-grid">
+            <div class="kpi-card">
+                <h3>👥 Total Employés</h3>
+                <div class="kpi-value">{{ total_employees }}</div>
+                <div class="kpi-change">Actifs dans le système</div>
             </div>
-          </section>
-        </section>
-        </section>
-        
-    </section>
-{% endblock content %}
+
+            <div class="kpi-card">
+                <h3>📅 Congés ce mois</h3>
+                <div class="kpi-value">{{ total_leaves_month }}</div>
+                <div class="kpi-change">
+                    <span class="trend-indicator trend-up">↗ +12%</span> vs mois dernier
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <h3>✈️ Tickets ce mois</h3>
+                <div class="kpi-value">{{ total_tickets_month }}</div>
+                <div class="kpi-change">
+                    <span class="trend-indicator trend-up">↗ +8%</span> vs mois dernier
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <h3>⏳ En attente</h3>
+                <div class="kpi-value">{{ pending_leaves|add:pending_tickets }}</div>
+                <div class="kpi-change">{{ pending_leaves }} congés + {{ pending_tickets }} tickets</div>
+            </div>
+        </div>
+
+        <!-- Charts Row 1 - Dashboard Charts -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title text-center">Répartition par statut de congés</h4>
+                        <canvas id="leaveChart" style="height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title text-center">Distribution des destinations</h4>
+                        <canvas id="ticketChart" style="height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 2 - Analytics Charts -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <h4 class="chart-title">📈 Évolution des congés (6 mois)</h4>
+                    <canvas id="leavesTrendChart" height="300"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <h4 class="chart-title">✈️ Évolution des tickets (6 mois)</h4>
+                    <canvas id="ticketsTrendChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 3 -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <h4 class="chart-title">🏢 Taux d'absentéisme par département</h4>
+                    <canvas id="absenteeismChart" height="300"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <h4 class="chart-title">🌍 Destinations populaires</h4>
+                    <canvas id="destinationsChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 4 -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <h4 class="chart-title">📊 Répartition des types de congés</h4>
+                    <canvas id="leaveTypesChart" height="300"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <h4 class="chart-title">⏱️ Métriques de performance</h4>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="text-center p-3">
+                                <h5 style="font-size: 1.2rem; font-weight: 600;">Délai moyen validation</h5>
+                                <div class="h2 text-primary" style="font-size: 2rem;">
+                                    {% if avg_approval_time %}
+                                        {{ avg_approval_time|floatformat:1 }} jours
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center p-3">
+                                <h5 style="font-size: 1.2rem; font-weight: 600;">Délai moyen traitement</h5>
+                                <div class="h2 text-info" style="font-size: 2rem;">
+                                    {% if avg_processing_time %}
+                                        {{ avg_processing_time|floatformat:1 }} jours
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center p-3">
+                                <h5 style="font-size: 1.2rem; font-weight: 600;">Taux d'annulation</h5>
+                                <div class="h2 text-warning" style="font-size: 2rem;">{{ cancellation_rate }}%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
 
 {% block extrajs %}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Initialize both charts after DOM is loaded
-        $(document).ready(function() {
-            // Welcome notification
-            var get_login_user = '{{request.user.username}}';
-            $.notify({
-                title: '<strong>Bienvenue!</strong>',
-                icon: 'fa fa-user',
-                message: "Bienvenue à TUNISAIR Express site ," + get_login_user
-            }, {
-                type: 'info',
-                timer: 4000
-            });
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-            // Initialize leave chart
-            const leaveLabels = {{ leave_labels|safe }};
-            const leaveCounts = {{ leave_counts|safe }};
-            const ctxLeave = document.getElementById('leaveChart').getContext('2d');
-            if (ctxLeave) {
-                new Chart(ctxLeave, {
-                    type: 'pie',
-                    data: {
-                        labels: leaveLabels,
-                        datasets: [{
-                            label: 'Nombre de congés',
-                            data: leaveCounts,
-                            backgroundColor: [
-                                '#007bff',
-                                '#28a745',
-                                '#ffc107',
-                                '#dc3545',
-                                '#17a2b8'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            },
-                            title: {
-                                display: false
-                            }
-                        }
-                    }
-                });
+<!-- Données pour les graphiques -->
+{{ leave_labels|json_script:"leave_labels" }}
+{{ leave_counts|json_script:"leave_counts" }}
+{{ destination_labels|json_script:"destination_labels" }}
+{{ destination_counts|json_script:"destination_counts" }}
+{{ monthly_leaves|json_script:"monthly_leaves" }}
+{{ monthly_tickets|json_script:"monthly_tickets" }}
+{{ absenteeism_data|json_script:"absenteeism_data" }}
+{{ popular_destinations|json_script:"popular_destinations" }}
+{{ leave_types|json_script:"leave_types" }}
+
+<script>
+$(document).ready(function() {
+    // Configuration globale Chart.js
+    Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+    Chart.defaults.color = '#2d3748';
+
+    // Récupération des données depuis les scripts JSON
+    const leaveLabels = JSON.parse(document.getElementById('leave_labels').textContent);
+    const leaveCounts = JSON.parse(document.getElementById('leave_counts').textContent);
+    const destinationLabels = JSON.parse(document.getElementById('destination_labels').textContent);
+    const destinationCounts = JSON.parse(document.getElementById('destination_counts').textContent);
+    const monthlyLeaves = JSON.parse(document.getElementById('monthly_leaves').textContent);
+    const monthlyTickets = JSON.parse(document.getElementById('monthly_tickets').textContent);
+    const absenteeismData = JSON.parse(document.getElementById('absenteeism_data').textContent);
+    const popularDestinations = JSON.parse(document.getElementById('popular_destinations').textContent);
+    const leaveTypes = JSON.parse(document.getElementById('leave_types').textContent);
+    
+    // Debug: afficher les données dans la console
+    console.log('Données récupérées:', {
+        leaveLabels, leaveCounts, destinationLabels, destinationCounts,
+        monthlyLeaves, monthlyTickets, absenteeismData, popularDestinations, leaveTypes
+    });
+    
+    // Debug spécifique pour les 3 diagrammes problématiques
+    console.log('=== DEBUG DIAGRAMMES ===');
+    console.log('absenteeismData:', absenteeismData);
+    console.log('popularDestinations:', popularDestinations);
+    console.log('leaveTypes:', leaveTypes);
+    console.log('Canvas elements:');
+    console.log('absenteeismChart:', document.getElementById('absenteeismChart'));
+    console.log('destinationsChart:', document.getElementById('destinationsChart'));
+    console.log('leaveTypesChart:', document.getElementById('leaveTypesChart'));
+
+    // === Dashboard Charts ===
+    // Graphique répartition congés
+    const ctxLeave = document.getElementById('leaveChart');
+    if (ctxLeave && leaveLabels.length > 0) {
+        new Chart(ctxLeave.getContext('2d'), {
+            type: 'pie',
+            data: {
+                labels: leaveLabels,
+                datasets: [{
+                    label: 'Nombre de congés',
+                    data: leaveCounts,
+                    backgroundColor: [
+                        '#007bff', '#28a745', '#ffc107', '#dc3545', '#17a2b8'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    title: { display: true, text: 'Répartition des congés' }
+                }
             }
-
-            // Initialize destination chart with pastel colors
-            const destinationLabels = {{ destination_labels|safe }};
-            const destinationCounts = {{ destination_counts|safe }};
-            const ctxTicket = document.getElementById('ticketChart').getContext('2d');
-            if (ctxTicket) {
-                // Pastel color palette
-                const pastelColors = [
-                    'rgba(255, 165, 0, 0.8)',    // Orange pastel
-                    'rgba(160, 102, 255, 0.8)',  // Purple pastel
-                    'rgba(255, 105, 180, 0.8)',  // Pink pastel
-                    'rgba(255, 192, 203, 0.8)',  // Light pink pastel
-                    'rgba(255, 218, 185, 0.8)',  // Peach pastel
-                    'rgba(173, 216, 230, 0.8)'   // Light blue pastel
-                ];
-
-                // Generate colors for each bar
-                const colors = [];
-                destinationLabels.forEach((label, index) => {
-                    colors.push(pastelColors[index % pastelColors.length]);
-                });
-
-                new Chart(ctxTicket, {
-                    type: 'bar',
-                    data: {
-                        labels: destinationLabels,
-                        datasets: [{
-                            label: 'Nombre de tickets',
-                            data: destinationCounts,
-                            backgroundColor: colors,
-                            borderColor: colors.map(color => color.replace('0.8', '1')),
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'top'
-                            },
-                            title: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    stepSize: 1
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Initialize Chartist
-            demo.initChartist();
         });
-    </script>
-{% endblock extrajs %}
+    }
+
+    // Graphique destinations
+    const ctxTicket = document.getElementById('ticketChart');
+    if (ctxTicket && destinationLabels.length > 0) {
+        const pastelColors = [
+            'rgba(255, 165, 0, 0.8)', 'rgba(160, 102, 255, 0.8)', 'rgba(255, 105, 180, 0.8)',
+            'rgba(255, 192, 203, 0.8)', 'rgba(255, 218, 185, 0.8)', 'rgba(173, 216, 230, 0.8)'
+        ];
+        const colors = destinationLabels.map((_, index) => pastelColors[index % pastelColors.length]);
+
+        new Chart(ctxTicket.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: destinationLabels,
+                datasets: [{
+                    label: 'Nombre de tickets',
+                    data: destinationCounts,
+                    backgroundColor: colors,
+                    borderColor: colors.map(c => c.replace('0.8', '1')),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: 'Tickets par destination' }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1 }
+                    }
+                }
+            }
+        });
+    }
+
+    // === Analytics Charts ===
+    // Graphique évolution congés
+    const leavesCtx = document.getElementById('leavesTrendChart');
+    if (leavesCtx && monthlyLeaves.length > 0) {
+        new Chart(leavesCtx, {
+            type: 'line',
+            data: {
+                labels: monthlyLeaves.map(item => item.month),
+                datasets: [{
+                    label: 'Nombre de congés',
+                    data: monthlyLeaves.map(item => item.count),
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.1)' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
+
+    // Graphique évolution tickets
+    const ticketsCtx = document.getElementById('ticketsTrendChart');
+    if (ticketsCtx && monthlyTickets.length > 0) {
+        new Chart(ticketsCtx, {
+            type: 'line',
+            data: {
+                labels: monthlyTickets.map(item => item.month),
+                datasets: [{
+                    label: 'Nombre de tickets',
+                    data: monthlyTickets.map(item => item.count),
+                    borderColor: '#764ba2',
+                    backgroundColor: 'rgba(118, 75, 162, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.1)' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
+
+    // Graphique absentéisme
+    const absenteeismCtx = document.getElementById('absenteeismChart');
+    if (absenteeismCtx) {
+        console.log('Création graphique absentéisme avec données:', absenteeismData);
+        new Chart(absenteeismCtx, {
+            type: 'bar',
+            data: {
+                labels: absenteeismData.map(item => item.department),
+                datasets: [{
+                    label: "Taux d'absentéisme (%)",
+                    data: absenteeismData.map(item => item.rate),
+                    backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                    borderColor: '#667eea',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: { color: 'rgba(0,0,0,0.1)' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    } else {
+        console.error('Canvas absenteeismChart non trouvé!');
+    }
+
+    // Graphique destinations populaires
+    const destinationsCtx = document.getElementById('destinationsChart');
+    if (destinationsCtx) {
+        console.log('Création graphique destinations avec données:', popularDestinations);
+        new Chart(destinationsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: popularDestinations.map(item => item.destination),
+                datasets: [{
+                    data: popularDestinations.map(item => item.count),
+                    backgroundColor: [
+                        '#667eea', '#764ba2', '#f093fb', '#f5576c',
+                        '#4facfe', '#00f2fe', '#43e97b', '#38f9d7'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { 
+                        position: 'bottom',
+                        labels: { padding: 20 }
+                    },
+                    title: { display: false }
+                }
+            }
+        });
+    } else {
+        console.error('Canvas destinationsChart non trouvé!');
+    }
+
+    // Graphique types de congés
+    const leaveTypesCtx = document.getElementById('leaveTypesChart');
+    if (leaveTypesCtx) {
+        console.log('Création graphique types de congés avec données:', leaveTypes);
+        new Chart(leaveTypesCtx, {
+            type: 'pie',
+            data: {
+                labels: leaveTypes.map(item => item.leavetype),
+                datasets: [{
+                    data: leaveTypes.map(item => item.count),
+                    backgroundColor: [
+                        '#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { 
+                        position: 'bottom',
+                        labels: { padding: 20 }
+                    },
+                    title: { display: false }
+                }
+            }
+        });
+    } else {
+        console.error('Canvas leaveTypesChart non trouvé!');
+    }
+});
+</script>
+{% endblock %} 

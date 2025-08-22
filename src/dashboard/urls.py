@@ -4,7 +4,8 @@ from . import views
 app_name = 'dashboard'
 
 urlpatterns = [
-    path('welcome/', views.dashboard, name='dashboard'),
+    path('redirect/', views.custom_login_redirect, name='custom_login_redirect'),
+    path('welcome/', views.advanced_analytics_dashboard, name='dashboard'),
     path('acceuil/', views.acceuil, name='acceuil'),
     path('calendrier/', views.calendrier, name='calendrier'),
     path('help/', views.help, name='help'),
@@ -85,5 +86,28 @@ urlpatterns = [
     path('ticket/reject/<int:id>/', views.reject_ticket, name='reject_ticket'),
     path('ticket/unreject/<int:id>/',views.unreject_ticket,name='unreject_ticket'),
     path('dashboard/print_ticket/<int:ticket_id>/', views.print_ticket, name='print_ticket'),
+    
+    # Analytics et Reporting
+    path('analytics/', views.advanced_analytics_dashboard, name='analytics'),
+    path('reports/monthly/', views.monthly_report, name='monthly_report'),
+    path('reports/export/excel/', views.export_excel_report, name='export_excel'),
+    path('reports/export/pdf/', views.export_pdf_report, name='export_pdf'),
+    
+    # Rapports Analytics
+    path('reports/analytics/excel/', views.export_analytics_excel, name='export_analytics_excel'),
+    path('reports/analytics/pdf/', views.export_analytics_pdf, name='export_analytics_pdf'),
+    path('analytics/response-time/', views.response_time_analytics, name='response_time_analytics'),
+    
+    # Services IA
+    path('ai/analyze-sentiment/', views.analyze_sentiment, name='analyze_sentiment'),
+    path('ai/predict-priority/', views.predict_priority, name='predict_priority'),
+    path('ai/categorize-ticket/', views.categorize_ticket, name='categorize_ticket'),
+    path('ai/predict-leave-approval/', views.predict_leave_approval, name='predict_leave_approval'),
+    
+    # Gestion des Départements (Superuser uniquement)
+    path('departments/', views.departments_list, name='departments_list'),
+    path('departments/create/', views.department_create, name='department_create'),
+    path('departments/edit/<int:department_id>/', views.department_edit, name='department_edit'),
+    path('departments/delete/<int:department_id>/', views.department_delete, name='department_delete'),
     
 ]
